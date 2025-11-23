@@ -1,0 +1,173 @@
+.mission-section {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #ffffff 0%, var(--light-bg) 100%);
+  position: relative;
+}
+
+/* IMAGE */
+.mission-img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition);
+}
+
+.mission-img:hover {
+  transform: translateY(-6px);
+}
+
+/* TEXT */
+.mission-text {
+  font-size: 1.05rem;
+  color: var(--muted-text);
+  line-height: 1.8;
+  margin-top: 0.8rem;
+}
+
+/* SECTION HEADING (GLOBAL) */
+.section-heading {
+  margin-bottom: 1.2rem;
+}
+
+.section-heading h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+}
+
+.section-heading h2::after {
+  content: "";
+  width: 50%;
+  height: 0.2rem;
+  background: var(--primary-gradient);
+  position: absolute;
+  left: 0;
+  bottom: -0.4rem;
+  border-radius: 2rem;
+}
+
+.section-heading p {
+  color: var(--muted-text);
+  font-size: 0.95rem;
+  margin-top: 0.4rem;
+}
+
+/* MISSION POINTS */
+.mission-points {
+  margin-top: 1.5rem;
+  padding: 0;
+}
+
+.mission-points li {
+  list-style: none;
+  margin-bottom: 0.6rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mission-points i {
+  color: var(--primary-color);
+}
+
+/* STATS */
+.mission-stats {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.mission-stats h3 {
+  font-weight: 700;
+  margin-bottom: 0;
+  color: var(--primary-color);
+  font-size: 1.6rem;
+}
+
+.mission-stats span {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+}
+
+/* BUTTONS */
+.mission-btn-wrap {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.mission-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 3rem;
+  background: var(--primary-gradient);
+  color: #fff;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-block;
+}
+
+.mission-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.mission-btn.outline {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+/* BACKGROUND GLOW */
+.mission-section::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: -100px;
+  width: 250px;
+  height: 250px;
+  background: var(--primary-color);
+  opacity: 0.07;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+
+.mission-section::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  right: -100px;
+  width: 250px;
+  height: 250px;
+  background: var(--primary-color);
+  opacity: 0.07;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+
+/* MOBILE */
+@media (max-width: 48rem) {
+
+  .mission-section {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .section-heading h2::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .mission-stats {
+    justify-content: center;
+  }
+
+  .mission-btn-wrap {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+}

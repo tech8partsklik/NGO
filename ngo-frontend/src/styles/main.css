@@ -1,0 +1,277 @@
+/* ============= SOCIAL FLOATING ICONS ============== */
+
+.social-float {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    right: 20px;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 22px;
+    z-index: 100;
+    transition: all 0.4s ease;
+    line-height: 50px;
+}
+
+.social-float:hover {
+    transform: scale(1.15) rotate(6deg);
+}
+
+/* Pulse */
+.social-float::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    animation: pulse-border 1500ms ease-out infinite;
+}
+
+/* WhatsApp */
+.whatsapp-float {
+    background-color: #25d366;
+    bottom: 140px;
+}
+.whatsapp-float::before {
+    background-color: #25d366;
+}
+
+/* Facebook */
+.facebook-float {
+    background-color: #1877f2;
+    bottom: 200px;
+}
+.facebook-float::before {
+    background-color: #1877f2;
+}
+
+/* Instagram */
+.instagram-float {
+    background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    bottom: 260px;
+}
+.instagram-float::before {
+    background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+/* Twitter (X) */
+.twitter-float {
+    background-color: #000000;
+    bottom: 320px;
+}
+.twitter-float::before {
+    background-color: #000000;
+}
+
+/* YouTube */
+.youtube-float {
+    background-color: #ff0000;
+    bottom: 380px;
+}
+.youtube-float::before {
+    background-color: #ff0000;
+}
+
+/* LinkedIn */
+.linkedin-float {
+    background-color: #0a66c2;
+    bottom: 440px;
+}
+.linkedin-float::before {
+    background-color: #0a66c2;
+}
+
+/* Icon alignment tweak */
+.social-float i {
+    margin-top: 2px;
+}
+
+/* Pulse effect animation */
+@keyframes pulse-border {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .social-float {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        line-height: 42px;
+        right: 10px;
+    }
+
+    .whatsapp-float { bottom: 100px; }
+    .facebook-float { bottom: 150px; }
+    .instagram-float { bottom: 200px; }
+    .twitter-float { bottom: 250px; }
+    .youtube-float { bottom: 300px; }
+    .linkedin-float { bottom: 350px; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ANNOUNCEMENT BAR - NEW */
+
+.announcement-bar {
+  background: var(--dark-gradient);
+  color: var(--white-color);
+  padding: 10px 0;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.announcement-track {
+  opacity: 0.95;
+}
+
+
+.announcement-track {
+  display: block;
+  animation: slideFade 0.6s ease-in-out;
+}
+
+@keyframes slideFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== GLOBAL SECTION HEADING ===== */
+
+.section-heading h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+}
+
+.section-heading h2::after {
+  content: "";
+  width: 70px;
+  height: 3px;
+  background: var(--primary-gradient);
+  display: block;
+  margin: 0.5rem auto 0;
+  border-radius: 20px;
+}
+
+.section-heading p {
+  margin-top: 0.6rem;
+  color: var(--muted-text);
+  font-size: 0.95rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+

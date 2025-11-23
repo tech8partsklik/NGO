@@ -1,0 +1,32 @@
+.objectives-section {
+  padding: 4.5rem 0;
+  background: var(--light-bg);
+}
+
+.objective-card {
+  background: white;
+  padding: 2rem 1.4rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: 0.35s;
+  height: 100%;
+}
+
+.objective-card:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: var(--shadow-lg);
+}
+
+.objective-card i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.objective-card p {
+  color: var(--muted-text);
+  font-size: 0.95rem;
+}

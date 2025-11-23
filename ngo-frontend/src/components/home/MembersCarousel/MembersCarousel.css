@@ -1,0 +1,76 @@
+.member-section {
+  padding: 5rem 0;
+  background: var(--light-bg);
+}
+
+/* Swiper */
+.team-swiper {
+  padding: 2rem 0 3rem;
+}
+
+/* Pagination */
+.swiper-pagination-bullet {
+  background: #cbd5e1;
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--primary-color);
+}
+
+/* Card */
+.member-card {
+  background: white;
+  padding: 2.8rem 2rem;
+  border-radius: 1.6rem;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: var(--transition);
+  height: 100%;
+}
+
+.swiper-slide-active .member-card {
+  transform: translateY(-0.6rem);
+  box-shadow: var(--shadow-lg);
+}
+
+/* IMAGE */
+.member-img {
+  width: 7.5rem;
+  height: 7.5rem;
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  border: 0.22rem solid var(--primary-color);
+  padding: 0.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* TEXT */
+.member-card h5 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--text-color);
+}
+
+.member-card p {
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  margin: 0;
+}
+
+/* MOBILE */
+@media (max-width: 48rem) {
+  .member-card {
+    padding: 2rem 1.5rem;
+  }
+}

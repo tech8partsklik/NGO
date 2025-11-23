@@ -1,0 +1,49 @@
+.vision-section {
+  padding: 5rem 0;
+  background: var(--light-bg);
+}
+
+.vision-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-lg);
+  padding: 2.2rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.vision-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ICON */
+
+.vision-icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+  color: white;
+  font-size: 1.6rem;
+  box-shadow: 0 0 0 10px rgba(109, 213, 250, 0.1);
+}
+
+/* TEXT */
+
+.vision-card h3 {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin-bottom: .5rem;
+}
+
+.vision-card p {
+  font-size: .95rem;
+  line-height: 1.6;
+  color: var(--text-color);
+}
