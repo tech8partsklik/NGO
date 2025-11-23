@@ -1,0 +1,13 @@
+.hero { height:65vh; background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; position:relative; color:white; }
+.hero-overlay { text-align:center; padding:20px; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)); border-radius:10px; }
+.hero h1 { font-size:36px; margin:0 0 10px; text-shadow:0 4px 20px rgba(0,0,0,0.4); }
+.hero p { margin:0 0 18px; font-size:18px; color: #fff; opacity:0.95; }
+.hero-cta .btn { margin-right:10px; padding:12px 18px; background:#ff7a00; color:#fff; border-radius:8px; text-decoration:none; }
+.btn-outline { border:2px solid rgba(255,255,255,0.8); background:transparent; color:white; padding:10px 16px; border-radius:8px; text-decoration:none; }
+
+.three-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-top:28px; }
+.card { background:#fff; padding:18px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.06); text-align:center; }
+
+.impact { text-align:center; padding:32px 0; }
+.impact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:18px; }
+.impact-box { background:#fff; padding:18px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.06); font-weight:600; }
