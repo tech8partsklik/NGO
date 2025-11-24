@@ -1,0 +1,38 @@
+.video-card {
+  background: white;
+  border-radius: 1.25rem;
+  padding: 1rem 1rem 1.2rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  height: 100%;
+}
+
+.video-card:hover {
+  transform: translateY(-0.4rem);
+  box-shadow: var(--shadow-lg);
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 0.9rem;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border: none;
+}
+
+.video-card h6 {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+  text-align: center;
+}

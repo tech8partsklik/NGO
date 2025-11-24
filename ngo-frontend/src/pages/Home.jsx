@@ -7,6 +7,12 @@ import Mission from "../components/home/Mission/Mission";
 import Objectives from "../components/home/Objectives/Objectives";
 import MembersCarousel from "../components/home/MembersCarousel/MembersCarousel";
 import NewsSection from "../components/home/NewsSection/NewsSection";
+import JoinUsSection from "../components/home/JoinUsSection/JoinUsSection";
+import TestimonialsSection from "../components/home/TestimonialsSection/TestimonialsSection";
+import YoutubeSection from "../components/home/YoutubeSection/YoutubeSection";
+import DonateCTA from "../components/home/DonateCTA/DonateCTA";
+import GallerySection from "../components/home/GallerySection/GallerySection";
+import VideoSection from "../components/home/VideoSection/VideoSection";
 
 
 export default function Home() {
@@ -22,8 +28,21 @@ export default function Home() {
             <ImpactSection />
             <Mission />
             <Objectives />
+
+            <GallerySection />
+
+            <DonateCTA />
+
             <MembersCarousel />
+
+            {/* <YoutubeSection /> */}
+            <VideoSection />
+            <TestimonialsSection />
+
             <NewsSection />
+
+
+            <JoinUsSection />
         </>
     );
 }
