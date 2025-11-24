@@ -2,9 +2,11 @@
 
 :root {
   /* MAIN COLORS */
-  --primary-color: #1f3c88;    /* Deep Trust Blue */
+  --primary-color: #1f3c88;
+  /* Deep Trust Blue */
   --secondary-color: #111111;
-  --accent-color: #6dd5fa;     /* Soft Sky */
+  --accent-color: #6dd5fa;
+  /* Soft Sky */
   --white-color: #ffffff;
   --dark-color: #0f172a;
   --light-bg: #f6f8fb;
@@ -35,9 +37,11 @@
 
 
 
-/* html {
-  overflow: hidden;
-} */
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* GLOBAL RESET */
 * {
   margin: 0;
