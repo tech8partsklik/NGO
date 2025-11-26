@@ -1,9 +1,17 @@
-import React from 'react'
+import MetaTags from "../components/common/MetaTags"
+import PageHeader from "../components/common/PageHeader"
+import GallerySection from "../components/home/GallerySection/GallerySection"
 
-const Gallery = () => {
+export default function Gallery() {
   return (
-    <div>Gallery</div>
+    <>
+      <MetaTags
+        title="Gallery | Helping Hands NGO"
+        description="Our social work gallery"
+      />
+
+      <PageHeader title="Our Gallery" />
+      <GallerySection />
+    </>
   )
 }
-
-export default Gallery

@@ -15,6 +15,7 @@ import AdminLogin from "../pages/admin/Login";
 import AdminDashboard from "../pages/admin/Dashboard";
 
 import ProtectedRoute from "../components/admin/ProtectedRoute";
+import About from "../pages/About/About";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
       {/* PUBLIC WEBSITE */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/donation" element={<Donation />} />
         <Route path="/membership" element={<Membership />} />
         <Route path="/gallery" element={<Gallery />} />

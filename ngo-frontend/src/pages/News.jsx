@@ -1,9 +1,17 @@
-import React from 'react'
+import MetaTags from "../components/common/MetaTags"
+import PageHeader from "../components/common/PageHeader"
+import NewsSection from "../components/home/NewsSection/NewsSection"
 
-const News = () => {
+export default function News() {
   return (
-    <div>News</div>
+    <>
+      <MetaTags
+        title="News | Helping Hands NGO"
+        description="Latest news and activities"
+      />
+
+      <PageHeader title="Latest News" />
+      <NewsSection />
+    </>
   )
 }
-
-export default News
