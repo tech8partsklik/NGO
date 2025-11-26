@@ -1,13 +1,18 @@
 import axios from "axios";
-import { getToken, clearStorage } from "../utils/storage";
-import { BASE_API_URL } from "./endpoints";
+import { 
+  getToken, 
+  getRefreshToken, 
+  setToken, 
+  clearStorage 
+} from "../utils/storage";
+import { BASE_API_URL, ENDPOINTS } from "./endpoints";
 
 const api = axios.create({
   baseURL: BASE_API_URL,
   timeout: 15000,
 });
 
-// Request Interceptor
+// -------------------- REQUEST --------------------
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
@@ -21,13 +26,44 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor
+// -------------------- RESPONSE --------------------
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error?.response?.status === 401) {
-      clearStorage();
-      window.location.href = "/admin/login";
+  async (error) => {
+    const originalRequest = error.config;
+
+    // If Access token expired -> Try refresh
+    if (
+      error?.response?.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      const refresh = getRefreshToken();
+
+      if (refresh) {
+        try {
+          const { data } = await axios.post(
+            ENDPOINTS.AUTH.ROTATE_TOKEN,
+            { refresh }
+          );
+
+          if (data?.access) {
+            setToken(data.access);
+
+            originalRequest.headers.Authorization =
+              `Bearer ${data.access}`;
+
+            return api(originalRequest);
+          }
+        } catch (err) {
+          clearStorage();
+          window.location.href = "/admin/login";
+        }
+      } else {
+        clearStorage();
+        window.location.href = "/admin/login";
+      }
     }
 
     return Promise.reject(error);

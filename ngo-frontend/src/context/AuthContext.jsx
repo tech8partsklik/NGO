@@ -1,42 +1,30 @@
-import { createContext, useState, useEffect } from "react";
-import {
-  getUser,
-  setUser,
-  setToken,
-  setRefreshToken,
-  clearStorage,
-} from "../utils/storage";
+import { createContext, useState } from "react";
+import { getUser, clearStorage } from "../utils/storage";
+import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUserState] = useState(getUser());
-  const [loading, setLoading] = useState(true);
-
-  const login = (data) => {
-    setToken(data.access);
-    setRefreshToken(data.refresh);
-    setUser(data.user);
-    setUserState(data.user);
-  };
+  const [user, setUser] = useState(getUser());
+  const navigate = useNavigate();
 
   const logout = () => {
     clearStorage();
-    setUserState(null);
+    setUser(null);
+    navigate("/login");
   };
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const isAdmin = user?.role?.name === "admin";
+  const isMember = user?.role?.name === "member";
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        login,
+        setUser,
         logout,
-        isAuthenticated: !!user,
-        loading,
+        isAdmin,
+        isMember
       }}
     >
       {children}

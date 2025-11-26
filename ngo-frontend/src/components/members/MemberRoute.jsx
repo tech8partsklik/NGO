@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { getUser } from "../../utils/storage";
 
-export default function ProtectedRoute({ children }) {
+export default function MemberRoute({ children }) {
   const user = getUser();
 
-  if (!user) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/member/login" />;
 
-  if (user.role?.name !== "admin") {
+  if (user.role?.name !== "member") {
     return <Navigate to="/" />;
   }
 

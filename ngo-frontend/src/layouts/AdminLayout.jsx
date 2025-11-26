@@ -1,9 +1,12 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
-const AdminLayout = () => {
+export default function AdminLayout() {
   return (
-    <div>AdminLayout</div>
-  )
+    <div className="admin-wrapper">
+      {/* <Sidebar /> */}
+      <div className="admin-content">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
-
-export default AdminLayout

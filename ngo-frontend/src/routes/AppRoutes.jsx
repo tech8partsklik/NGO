@@ -13,14 +13,18 @@ import Contact from "../pages/Contact";
 import MemberLogin from "../pages/members/Login";
 import AdminLogin from "../pages/admin/Login";
 import AdminDashboard from "../pages/admin/Dashboard";
+import MemberDashboard from "../pages/members/Dashboard";
 
 import ProtectedRoute from "../components/admin/ProtectedRoute";
+import MemberRoute from "../components/members/MemberRoute";
+
 import About from "../pages/About/About";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* PUBLIC WEBSITE */}
+
+      {/* ==================== PUBLIC WEBSITE ==================== */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -29,12 +33,13 @@ export default function AppRoutes() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/news" element={<News />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/member/login" element={<MemberLogin />} />
+        <Route path="/login" element={<AdminLogin />} />
       </Route>
 
-      {/* ADMIN */}
-      <Route path="/admin/login" element={<AdminLogin />} />
+      {/* ==================== LOGIN ==================== */}
+      <Route path="/member/login" element={<MemberLogin />} />
 
+      {/* ==================== ADMIN ==================== */}
       <Route
         path="/admin"
         element={
@@ -45,6 +50,17 @@ export default function AppRoutes() {
       >
         <Route path="dashboard" element={<AdminDashboard />} />
       </Route>
+
+      {/* ==================== MEMBER ==================== */}
+      <Route
+        path="/member"
+        element={
+          <MemberRoute>
+            <MemberDashboard />
+          </MemberRoute>
+        }
+      />
+
     </Routes>
   );
 }

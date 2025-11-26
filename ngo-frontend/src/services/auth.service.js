@@ -1,30 +1,19 @@
-import api from "./api"
-import { ENDPOINTS } from "./endpoints"
+import api from "./api";
+import { ENDPOINTS } from "./endpoints";
+import { 
+  setToken, 
+  setRefreshToken, 
+  setUser 
+} from "../utils/storage";
 
-// === LOGIN ===
 export const loginUser = async (payload) => {
-  const { data } = await api.post(ENDPOINTS.AUTH.LOGIN, payload)
-  return data
-}
+  const { data } = await api.post(ENDPOINTS.AUTH.LOGIN, payload);
 
-export const fetchUsers = async (payload) => {
-  const { data } = await api.post(ENDPOINTS.AUTH.FETCH_USERS, payload)
-  return data
-}
+  if (data?.access && data?.refresh) {
+    setToken(data.access);
+    setRefreshToken(data.refresh);
+    setUser(data.user);
+  }
 
-export const fetchRoles = async (payload) => {
-  const { data } = await api.get(ENDPOINTS.AUTH.ROLES, {
-    params: payload,
-  })
-  return data
-}
-
-export const addRole = async (payload) => {
-  const { data } = await api.post(ENDPOINTS.AUTH.ROLES, payload)
-  return data
-}
-
-export const updateRole = async (payload) => {
-  const { data } = await api.put(ENDPOINTS.AUTH.ROLES, payload)
-  return data
-}
+  return data.user;
+};

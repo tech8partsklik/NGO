@@ -1,33 +1,33 @@
-// TOKEN
-export const getToken = () => localStorage.getItem("access_token");
-export const setToken = (token) => localStorage.setItem("access_token", token);
-export const removeToken = () => localStorage.removeItem("access_token");
-
-// REFRESH TOKEN
-export const getRefreshToken = () => localStorage.getItem("refresh_token");
-export const setRefreshToken = (token) =>
-  localStorage.setItem("refresh_token", token);
-export const removeRefreshToken = () =>
-  localStorage.removeItem("refresh_token");
-
-// USER
-export const getUser = () => {
-  const data = localStorage.getItem("user");
-  return data ? JSON.parse(data) : null;
+// ===== TOKEN STORAGE =====
+export const setToken = (access) => {
+  localStorage.setItem("access_token", access);
 };
 
+export const getToken = () => {
+  return localStorage.getItem("access_token");
+};
+
+export const setRefreshToken = (refresh) => {
+  localStorage.setItem("refresh_token", refresh);
+};
+
+export const getRefreshToken = () => {
+  return localStorage.getItem("refresh_token");
+};
+
+// ===== USER STORAGE =====
 export const setUser = (user) => {
   localStorage.setItem("user", JSON.stringify(user));
 };
 
-export const removeUser = () => localStorage.removeItem("user");
+export const getUser = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
 
-// ROLE
-export const setRole = (role) => localStorage.setItem("role", role);
-export const getRole = () => localStorage.getItem("role");
-export const removeRole = () => localStorage.removeItem("role");
-
-// CLEAR ALL
+// ===== CLEAR ALL =====
 export const clearStorage = () => {
-  localStorage.clear();
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  localStorage.removeItem("user");
 };
