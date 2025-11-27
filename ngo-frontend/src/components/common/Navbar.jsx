@@ -56,14 +56,15 @@ export default function Navbar() {
             )}
 
             {site?.donate_url && (
-              <a
-                href={site.donate_url}
-                target="_blank"
+              <Link
+                // href={site.donate_url}
+                // target="_blank"
+                to={`/donation`}
                 className="donate-btn"
               >
                 <i className="fa-solid fa-hand-holding-heart"></i>
                 Donate Now
-              </a>
+              </Link>
             )}
 
             {!user ? (

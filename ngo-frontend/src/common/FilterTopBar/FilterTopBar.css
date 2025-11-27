@@ -1,0 +1,135 @@
+.filter-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* flex-wrap: wrap; */
+  /* padding: 8px 4px; */
+}
+
+.filter-topbar .search-box {
+  position: relative;
+  width: 260px;
+}
+
+.filter-topbar .search-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: var(--color-blue);
+  font-size: 14px;
+}
+
+.filter-topbar .search-input {
+  width: 100%;
+  padding: 8px 10px 8px 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fafafa;
+  transition: 0.2s ease;
+}
+
+.filter-topbar .search-input:focus {
+  background: #fff;
+  border-color: #6a9cff;
+  box-shadow: 0 0 0 2px rgba(106, 156, 255, 0.25);
+  outline: none;
+}
+
+
+.filter-topbar .filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+
+
+
+
+/* Default = desktop */
+.desktop-only {
+  display: flex;
+  gap: 8px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* MOBILE / TABLET */
+@media (max-width: 768px) {
+  .filter-topbar {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: flex !important;
+    gap: 0.2rem;
+    align-items: center;
+  }
+
+  .search-box {
+    flex: 1;
+  }
+
+  .filter-topbar .search-box {
+    width: auto;
+  }
+
+
+  .icon-btn {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+.search-control {
+  width: 100%;
+  padding: 8px 12px 8px 34px !important;
+  border-radius: 999px !important;
+  border: 1px solid #e5e7eb !important;
+  background-color: #fafafa !important;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' stroke='%23777' fill='none' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='16' y1='16' x2='21' y2='21'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 14px;
+
+  font-size: 0.8rem !important;
+  margin-bottom: 6px;
+}
+
+
+
+
+.search-control:focus {
+  background-color: #fff !important;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 1px #1d4ed8;
+  outline: none;
+}
+
+

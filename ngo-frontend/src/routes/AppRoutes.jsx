@@ -19,6 +19,7 @@ import ProtectedRoute from "../components/admin/ProtectedRoute";
 import MemberRoute from "../components/members/MemberRoute";
 
 import About from "../pages/About/About";
+import AllMembers from "../pages/admin/Members/AllMembers";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +50,10 @@ export default function AppRoutes() {
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
+        {/* <Route path="members" element={<div>Members Management</div>} /> */}
+        <Route path="members" element={<AllMembers/>} />
+        <Route path="banners" element={<div>Banner Management</div>} />
+        <Route path="donations" element={<div>Donation Management</div>} />
       </Route>
 
       {/* ==================== MEMBER ==================== */}
