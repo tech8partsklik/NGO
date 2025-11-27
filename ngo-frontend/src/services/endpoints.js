@@ -1,13 +1,13 @@
-export const BASE_API_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000/api"; // HOME
 // export const BASE_API_URL =
-//   import.meta.env.VITE_API_URL || "http://192.168.1.32:8000/api";  // OFFICE
+//   import.meta.env.VITE_API_URL || "http://192.168.1.61:8000/api"; // HOME
+export const BASE_API_URL =
+  import.meta.env.VITE_API_URL || "http://192.168.1.18:8000/api";  // OFFICE
 
 export const BASE_WS_URL =
   import.meta.env.VITE_WS_URL || "ws://192.168.1.32:8000";
 
 export const BASE_MEDIA_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000";
+  import.meta.env.VITE_API_URL || "http://192.168.1.18:8000";
 
 export const ENDPOINTS = {};
 

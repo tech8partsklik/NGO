@@ -32,3 +32,34 @@ export const blockMember = async (id) => {
 
   return data;
 };
+
+
+
+//  ADD MEMBER (FormData)
+export const addMember = async (formData) => {
+  const { data } = await api.post(ENDPOINTS.MEMBERS.ADD, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+
+  return data;
+};
+
+
+
+// UPDATE MEMBER (FormData)
+export const updateMember = async (formData) => {
+  const { data } = await api.post(
+    ENDPOINTS.MEMBERS.UPDATE_MEMBER_DETAIL,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }
+  );
+
+  return data;
+};
+

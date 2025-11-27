@@ -11,6 +11,8 @@ import { debounce } from "../../../utils/debounce";
 import FilterTopBar from "../../../common/FilterTopBar/FilterTopBar";
 import Pagination from "../../../common/Pagination/Pagination";
 import { BASE_MEDIA_URL } from "../../../services/endpoints";
+import AddMemberModal from "./AddMemberModal";
+import UpdateMemberModal from "./UpdateMemberModal";
 
 export default function AllMembers() {
     const location = useLocation();
@@ -19,6 +21,23 @@ export default function AllMembers() {
     // -----------------------------
     // STATES
     // -----------------------------
+
+
+
+
+    const [showAddModal, setShowAddModal] = useState(false);
+
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [editMember, setEditMember] = useState(null);
+
+    const openUpdateModal = (member) => {
+        setEditMember(member);
+        setShowUpdateModal(true);
+    };
+
+
+
+
     const [loading, setLoading] = useState(true);
     const [members, setMembers] = useState([]);
 
@@ -120,10 +139,10 @@ export default function AllMembers() {
 
     const menus = [
         {
-            url: "/admin/members/add",
             name: "Add Member",
             icon: <i className="fa-solid fa-user-plus me-1"></i>,
-            className: "btn-dark"
+            className: "btn-dark",
+            onClick: () => setShowAddModal(true)
         },
         {
             type: "dropdown",
@@ -172,6 +191,31 @@ export default function AllMembers() {
 
     return (
         <>
+
+
+            {showAddModal && (
+                <AddMemberModal
+                    show={showAddModal}
+                    onHide={() => setShowAddModal(false)}
+                    onSuccess={() => {
+                        fetchData(currentPage, searchQuery)
+                    }}
+                />
+            )}
+
+
+            {showUpdateModal && (
+                <UpdateMemberModal
+                    show={showUpdateModal}
+                    onHide={() => setShowUpdateModal(false)}
+                    member={editMember}
+                    onSuccess={() => {
+                        fetchData(currentPage, searchQuery);
+                    }}
+                />
+            )}
+
+
 
             {/* ================= BREADCRUMB ================= */}
             <nav>
@@ -259,7 +303,19 @@ export default function AllMembers() {
 
                                     <td>{m.city}</td>
 
-                                    <td className="actions">
+                                    <td className=" text-nowrap">
+
+
+                                        <button
+                                            className="btn btn-primary me-1"
+                                            onClick={() => openUpdateModal(m)}
+                                        >
+                                            <i className="fa fa-pen"></i>
+                                        </button>
+
+
+
+
                                         {!m.is_active ? (
                                             <button
                                                 className="btn btn-success"
@@ -275,6 +331,9 @@ export default function AllMembers() {
                                                 <i className="fa-solid fa-ban me-1"></i> Block
                                             </button>
                                         )}
+
+
+
                                     </td>
 
                                 </tr>

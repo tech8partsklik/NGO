@@ -1,9 +1,10 @@
 import axios from "axios";
-import { 
-  getToken, 
-  getRefreshToken, 
-  setToken, 
-  clearStorage 
+import {
+  getToken,
+  getRefreshToken,
+  setToken,
+  clearStorage,
+  getUser
 } from "../utils/storage";
 import { BASE_API_URL, ENDPOINTS } from "./endpoints";
 
@@ -16,9 +17,15 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
+    const user = getUser();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Add role_pk if role.id exists
+    if (user?.role?.id) {
+      config.headers["role_pk"] = user.role.id;
     }
 
     return config;
