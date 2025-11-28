@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import toast from "react-hot-toast";
 
 import { addMember } from "../../../services/member.service";
-import toast from "react-hot-toast";
+import { getAllRoles } from "../../../services/role.service";
 
 export default function AddMemberModal({ show, onHide, onSuccess }) {
     const [loading, setLoading] = useState(false);
+    const [roles, setRoles] = useState([]);
+    const [rolesLoading, setRolesLoading] = useState(true);
 
     const [form, setForm] = useState({
         email: "",
@@ -22,11 +25,53 @@ export default function AddMemberModal({ show, onHide, onSuccess }) {
         pincode: "",
         phone: "",
         country_code: "91",
-        role_pk: 1,
+        role_pk: "",
         is_active: 1
     });
 
     const [photo, setPhoto] = useState(null);
+
+
+    // ================= FETCH ROLES =================
+    const fetchRoles = async () => {
+        try {
+            setRolesLoading(true);
+
+            const res = await getAllRoles();
+
+            if (res?.status === 1) {
+                setRoles(res.data || []);
+
+                // ✅ Auto select first role
+                if (res.data?.length > 0) {
+                    setForm((prev) => ({
+                        ...prev,
+                        role_pk: res.data[0].id
+                    }));
+                }
+
+            } else {
+                toast.error("Failed to load roles");
+            }
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Error loading roles");
+
+        } finally {
+            setRolesLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (show) {
+            fetchRoles();
+        }
+    }, [show]);
+
+
+    // ================= INPUTS =================
+
 
     const handleChange = (e) => {
         setForm((prev) => ({
@@ -136,6 +181,34 @@ export default function AddMemberModal({ show, onHide, onSuccess }) {
                                 onChange={handleChange}
                                 required
                             />
+                        </div>
+
+
+                        {/* ROLE SELECT ✅ */}
+                        <div className="col-md-6">
+                            <label htmlFor="role_pk" className="form-label">
+                                Role
+                            </label>
+
+                            {rolesLoading ? (
+                                <div className="form-control">Loading roles...</div>
+                            ) : (
+                                <select
+                                    id="role_pk"
+                                    name="role_pk"
+                                    className="form-select"
+                                    value={form.role_pk}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option value="">Select Role</option>
+                                    {roles.map((role) => (
+                                        <option key={role.id} value={role.id}>
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
 
                         {/* Phone */}

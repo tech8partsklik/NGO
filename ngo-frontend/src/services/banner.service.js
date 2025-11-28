@@ -44,7 +44,7 @@ const DUMMY_BANNERS = [
 export const getHeroBanners = async () => {
   try {
     const { data } = await api.get(
-      ENDPOINTS?.WEBSITE?.BANNERS || "/website/banners"
+      ENDPOINTS?.WEBSITE?.BANNERS
     );
 
     // If API returns data → use it
@@ -58,4 +58,47 @@ export const getHeroBanners = async () => {
     console.warn("Banner API failed, using dummy data");
     return DUMMY_BANNERS;
   }
+};
+
+
+// ✅ GET ALL BANNERS (NO PARAMS)
+export const getAllBanners = async () => {
+  const { data } = await api.get(ENDPOINTS.BANNERS.LIST);
+  return data;
+};
+
+
+
+// ✅ DELETE BANNER
+export const deleteBanner = async (bannerId) => {
+  const { data } = await api.delete(ENDPOINTS.BANNERS.DELETE, {
+    data: {
+      banner_pk: bannerId
+    }
+  });
+
+  return data;
+};
+
+
+// ✅ ADD BANNER (FormData)
+export const addBanner = async (formData) => {
+  const { data } = await api.post(
+    ENDPOINTS.BANNERS.ADD,
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
+  );
+
+  return data;
+};
+
+// ✅ UPDATE BANNER (FormData)
+export const updateBanner = async (formData) => {
+  const { data } = await api.post(ENDPOINTS.BANNERS.UPDATE, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+
+  return data;
 };

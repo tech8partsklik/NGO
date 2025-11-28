@@ -1,13 +1,13 @@
-// export const BASE_API_URL =
-//   import.meta.env.VITE_API_URL || "http://192.168.1.61:8000/api"; // HOME
 export const BASE_API_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.18:8000/api";  // OFFICE
+  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000/api"; // HOME
+// export const BASE_API_URL =
+//   import.meta.env.VITE_API_URL || "http://192.168.1.18:8000/api";  // OFFICE
 
 export const BASE_WS_URL =
   import.meta.env.VITE_WS_URL || "ws://192.168.1.32:8000";
 
 export const BASE_MEDIA_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.18:8000";
+  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000";
 
 export const ENDPOINTS = {};
 
@@ -35,13 +35,46 @@ ENDPOINTS.MEMBERS = {
 ENDPOINTS.BANNERS = {
   ADD: `${BASE_API_URL}/banners/add-banner/`,
   UPDATE: `${BASE_API_URL}/banners/update-banner/`,
-  LIST: `${BASE_API_URL}/banners/get-banner/`,
+  LIST: `${BASE_API_URL}/banners/get-banners/`,
   DELETE: `${BASE_API_URL}/banners/delete-banner/`,
+};
+
+// ====================== ROLES =====================
+ENDPOINTS.ROLES = {
+  LIST: `${BASE_API_URL}/roles/get-roles/`,
+  ADD: `${BASE_API_URL}/roles/add-role/`,
+  UPDATE: `${BASE_API_URL}/roles/update-role/`,
+  DELETE: `${BASE_API_URL}/roles/delete-role/`,
+};
+
+// ====================== ANNOUNCEMENT =====================
+ENDPOINTS.ANNOUNCEMENT = {
+  LIST: `${BASE_API_URL}/announcements/get-announcements/`, // GET 
+  ADD: `${BASE_API_URL}/announcements/add-announcement/`,  // POST
+  UPDATE: `${BASE_API_URL}/announcements/update-announcement/`,  // POST
+  DELETE: `${BASE_API_URL}/announcements/delete-announcement/`,  // DELETE
+};
+
+// ====================== TESTIMONIALS =====================
+ENDPOINTS.TESTIMONIALS = {
+  LIST: `${BASE_API_URL}/testimonials/get-testimonials/`, // POST 
+  ADD: `${BASE_API_URL}/testimonials/add-testimonial/`,  // POST
+  UPDATE: `${BASE_API_URL}/testimonials/update-testimonial/`,  // POST
+  DELETE: `${BASE_API_URL}/testimonials/delete-testimonial/`,  // DELETE
+};
+
+
+// ====================== SITE CREDENTIAL =====================
+ENDPOINTS.SITE_CREDENTIAL = {
+  GET: `${BASE_API_URL}/sitecredential/`, // GET request without params
+  GET_ADMIN: `${BASE_API_URL}/get-credentials-for-admin/`,  // GET request without params
+  UPDATE: `${BASE_API_URL}/site-data/update-credentials/`,  // POST
 };
 
 // ====================== DONATION =====================
 ENDPOINTS.DONATION = {
-  CREATE: `${BASE_API_URL}/donation/create/`,
+  CREATE_ORDER: `${BASE_API_URL}/donations/create-order/`,
+  VERIFY_PAYMENT: `${BASE_API_URL}/donations/verify-payment/`,
   LIST: `${BASE_API_URL}/donation/list/`,
 };
 

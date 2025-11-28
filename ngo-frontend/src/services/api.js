@@ -24,9 +24,9 @@ api.interceptors.request.use(
     }
 
     // Add role_pk if role.id exists
-    if (user?.role?.id) {
-      config.headers["role_pk"] = user.role.id;
-    }
+    // if (user?.role?.id) {
+    //   config.headers["role_pk"] = user.role.id;
+    // }
 
     return config;
   },

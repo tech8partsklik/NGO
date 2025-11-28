@@ -33,8 +33,24 @@ const ADMIN_NAVS = [
         path: "/admin/donations",
         icon: "fa-hand-holding-heart",
       },
+      {
+        name: "Roles",
+        path: "/admin/roles",
+        icon: "fa-hand-holding-heart",
+      },
+      {
+        name: "Announcements",
+        path: "/admin/announcements",
+        icon: "fa-hand-holding-heart",
+      },
+      {
+        name: "Testimonials",
+        path: "/admin/testimonials",
+        icon: "fa-hand-holding-heart",
+      },
     ],
   },
+  
 ];
 
 export default function Sidebar({ collapsed, setCollapsed }) {

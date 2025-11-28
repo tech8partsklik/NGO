@@ -1,0 +1,171 @@
+.donation-section {
+  background: linear-gradient(135deg, #f8fafc, #eef2f7);
+}
+
+.donation-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 35px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 15px 35px rgba(0,0,0,.05);
+}
+
+/* AMOUNT CHIPS */
+.amount-chip {
+  border: 1.8px solid #0f172a;
+  padding: 10px 22px;
+  border-radius: 40px;
+  background: #fff;
+  color: #0f172a;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+
+.amount-chip:hover {
+  background: #0f172a;
+  color: #fff;
+}
+
+.amount-chip.active {
+  background: #0f172a;
+  color: #fff;
+}
+
+/* INPUTS OVERRIDE */
+.custom-input,
+.form-select {
+  border-radius: 12px !important;
+  height: 48px;
+  border: 1.5px solid #e5e7eb !important;
+  padding: 10px 14px;
+  font-size: .95rem;
+  box-shadow: none !important;
+  transition: all .15s ease;
+}
+
+.custom-input:focus,
+.form-select:focus {
+  border-color: #0f172a !important;
+  box-shadow: 0 0 0 3px rgba(15,23,42,.1) !important;
+}
+
+/* BUTTON OVERRIDE */
+.donation-section .donate-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: #0f172a;
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  transition: all .15s ease;
+}
+
+.donation-section .donate-btn:hover {
+  background: #020617;
+  transform: translateY(-1px);
+}
+
+/* RIGHT BOX */
+/* RIGHT IMPACT BOX - PREMIUM VERSION */
+
+.impact-box {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-radius: 22px;
+  padding: 35px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+/* TOP LINE ACCENT */
+.impact-box::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  height: 6px;
+  width: 100%;
+  background: linear-gradient(to right, #0f172a, #334155);
+}
+
+/* HEADER */
+.impact-header {
+  margin-bottom: 20px;
+}
+
+.impact-header h4 {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.impact-header span {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* LIST */
+.impact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.impact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 14px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.impact-list li:last-child {
+  border-bottom: none;
+}
+
+.impact-list i {
+  background: #0f172a;
+  color: white;
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 14px;
+  min-width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.impact-list strong {
+  display: block;
+  font-size: 1.05rem;
+  color: #0f172a;
+}
+
+.impact-list span {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+/* WHY DONATE BOX */
+.impact-highlight {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #0f172a;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px #1e293b;
+}
+
+.impact-highlight h6 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.impact-highlight p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #e2e8f0;
+}
+

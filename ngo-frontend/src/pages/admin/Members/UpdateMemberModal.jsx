@@ -5,9 +5,14 @@ import "react-phone-input-2/lib/style.css";
 import toast from "react-hot-toast";
 
 import { updateMember } from "../../../services/member.service";
+import { getAllRoles } from "../../../services/role.service";
+
 
 export default function UpdateMemberModal({ show, onHide, member, onSuccess }) {
     const [loading, setLoading] = useState(false);
+       const [rolesLoading, setRolesLoading] = useState(true);
+    const [roles, setRoles] = useState([]);
+
     const [photo, setPhoto] = useState(null); // ✅ NEW
 
     const [form, setForm] = useState({
@@ -23,8 +28,32 @@ export default function UpdateMemberModal({ show, onHide, member, onSuccess }) {
         pincode: "",
         phone: "",
         country_code: "91",
+        role_pk: "",
         is_active: 1
     });
+
+      // ================= FETCH ROLES =================
+    const fetchRoles = async () => {
+        try {
+            setRolesLoading(true);
+
+            const res = await getAllRoles();
+
+            if (res?.status === 1) {
+                setRoles(res.data || []);
+
+            } else {
+                toast.error("Failed to load roles");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Error loading roles");
+        } finally {
+            setRolesLoading(false);
+        }
+    };
+
+
 
     useEffect(() => {
         if (member) {
@@ -47,6 +76,12 @@ export default function UpdateMemberModal({ show, onHide, member, onSuccess }) {
             setPhoto(null); // reset photo on open
         }
     }, [member]);
+
+    useEffect(() => {
+        if (show) {
+            fetchRoles();
+        }
+    }, [show]);
 
     const handleChange = (e) => {
         setForm((prev) => ({
@@ -138,6 +173,30 @@ export default function UpdateMemberModal({ show, onHide, member, onSuccess }) {
                                 value={form.email}
                                 onChange={handleChange}
                             />
+                        </div>
+
+                        {/* ROLE */}
+                        <div className="col-md-6">
+                            <label htmlFor="role_pk" className="form-label">Role</label>
+
+                            {rolesLoading ? (
+                                <div className="form-control">Loading roles...</div>
+                            ) : (
+                                <select
+                                    id="role_pk"
+                                    name="role_pk"
+                                    className="form-select"
+                                    value={form.role_pk}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Select Role</option>
+                                    {roles.map((r) => (
+                                        <option key={r.id} value={r.id}>
+                                            {r.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
 
                         {/* PHONE */}
