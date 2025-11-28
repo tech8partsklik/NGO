@@ -105,7 +105,7 @@ export default function Donation() {
             });
 
             if (verifyResponse?.status === 1 || verifyResponse?.message) {
-              toast.success("🎉 Payment successful!");
+              toast.success("Payment successful!");
 
               navigate("/thank-you", {
                 state: {
@@ -115,7 +115,7 @@ export default function Donation() {
                 }
               });
             } else {
-              toast.error("❌ Payment verification failed");
+              toast.error("Payment verification failed");
             }
 
           } catch (error) {
@@ -145,10 +145,10 @@ export default function Donation() {
         description="Donate to help those in need"
       />
 
-      <PageHeader
+      {/* <PageHeader
         title="Donate Now"
         subtitle="Your small help can bring big change"
-      />
+      /> */}
 
       <section className="section-spacing donation-section">
         <div className="container-xl">
