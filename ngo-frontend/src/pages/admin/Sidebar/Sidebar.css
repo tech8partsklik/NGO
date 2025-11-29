@@ -45,7 +45,7 @@
 
 /* USER */
 .admin-user {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 0.8rem;
   border-radius: 10px;
   margin-bottom: 1.5rem;
@@ -81,7 +81,7 @@
 
 .sidebar-menu a:hover,
 .logout-btn:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
 }
 
@@ -104,10 +104,18 @@
 
 /* ADMIN CONTENT */
 .admin-content {
-    flex: 1;
-    padding: 2rem;
-    overflow: auto;
-    max-height: 100dvh;
+  flex: 1;
+  padding: 2rem;
+  overflow: auto;
+  max-height: 100dvh;
+  
+  
+}
+.admin-content .max-width {
+  /* ADD THESE */
+  padding: 0rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* COLLAPSED MODE */

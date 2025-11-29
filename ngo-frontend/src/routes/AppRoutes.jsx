@@ -30,6 +30,12 @@ import AllAnnouncements from "../pages/admin/Announcement/AllAnnouncements";
 import AllTestimonials from "../pages/admin/Testimonials/AllTestimonials";
 import AddTestimonial from "../pages/admin/Testimonials/AddTestimonial";
 import UpdateTestimonial from "../pages/admin/Testimonials/UpdateTestimonial";
+import AllGallery from "../pages/admin/Gallery/AllGallery";
+import AddGallery from "../pages/admin/Gallery/AddGallery";
+import UpdateGallery from "../pages/admin/Gallery/UpdateGallery";
+import AllCampaigns from "../pages/admin/Campaigns/AllCampaigns";
+import AddCampaign from "../pages/admin/Campaigns/AddCampaign";
+import UpdateCampaign from "../pages/admin/Campaigns/UpdateCampaign";
 
 export default function AppRoutes() {
   return (
@@ -64,20 +70,30 @@ export default function AppRoutes() {
       >
         <Route path="dashboard" element={<AdminDashboard />} />
         {/* <Route path="members" element={<div>Members Management</div>} /> */}
-        <Route path="members" element={<AllMembers/>} />
+        <Route path="members" element={<AllMembers />} />
 
 
-        <Route path="banners" element={<AllBanners/>} />
+        <Route path="banners" element={<AllBanners />} />
         <Route path="banners/add" element={<AddBanner />} />
         <Route path="banners/edit/:id" element={<UpdateBanner />} />
 
 
-        <Route path="roles" element={<AllRoles/>} />
-        <Route path="announcements" element={<AllAnnouncements/>} />
+        <Route path="roles" element={<AllRoles />} />
+        <Route path="announcements" element={<AllAnnouncements />} />
 
-            <Route path="testimonials" element={<AllTestimonials/>} />
+        <Route path="testimonials" element={<AllTestimonials />} />
         <Route path="testimonials/add" element={<AddTestimonial />} />
         <Route path="testimonials/:id" element={<UpdateTestimonial />} />
+
+        {/*  Gallery (NEW) */}
+        <Route path="gallery" element={<AllGallery />} />
+        <Route path="gallery/add" element={<AddGallery />} />
+        <Route path="gallery/:id" element={<UpdateGallery />} />
+
+        <Route path="campaigns" element={<AllCampaigns />} />
+        <Route path="campaigns/add" element={<AddCampaign />} />
+        <Route path="campaigns/:id" element={<UpdateCampaign />} />
+
 
         <Route path="donations" element={<div>Donation Management</div>} />
       </Route>

@@ -36,21 +36,30 @@ const ADMIN_NAVS = [
       {
         name: "Roles",
         path: "/admin/roles",
-        icon: "fa-hand-holding-heart",
+        icon: "fa-user-shield",
       },
       {
         name: "Announcements",
         path: "/admin/announcements",
-        icon: "fa-hand-holding-heart",
+        icon: "fa-bullhorn",
       },
       {
         name: "Testimonials",
         path: "/admin/testimonials",
-        icon: "fa-hand-holding-heart",
+        icon: "fa-comment-dots",
+      },
+      {
+        name: "Gallery",
+        path: "/admin/gallery",
+        icon: "fa-images",
+      },
+      {
+        name: "Campaigns",
+        path: "/admin/campaigns",
+        icon: "fa-bullhorn"
       },
     ],
-  },
-  
+  }
 ];
 
 export default function Sidebar({ collapsed, setCollapsed }) {
@@ -70,9 +79,8 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         onClick={() => setCollapsed(!collapsed)}
       >
         <i
-          className={`fa ${
-            collapsed ? "fa-chevron-right" : "fa-chevron-left"
-          }`}
+          className={`fa ${collapsed ? "fa-chevron-right" : "fa-chevron-left"
+            }`}
         ></i>
       </button>
 

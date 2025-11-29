@@ -217,7 +217,7 @@ export default function AllTestimonials() {
 
                   <td>
                     <img
-                      src={`${BASE_MEDIA_URL}/media/${item.image}`}
+                      src={`${BASE_MEDIA_URL}/${item.image}`}
                       width="45"
                       height="45"
                       className="rounded-circle object-fit-cover"
@@ -250,7 +250,7 @@ export default function AllTestimonials() {
                   <td className="text-nowrap">
                     {/* EDIT - PAGE */}
                     <Link
-                      to={`/admin/testimonials/edit/${item.id}`}
+                      to={`/admin/testimonials/${item.id}`}
                       className="btn btn-primary btn-sm me-1"
                     >
                       <i className="fa fa-pen"></i>

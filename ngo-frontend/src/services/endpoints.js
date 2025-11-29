@@ -1,5 +1,5 @@
 export const BASE_API_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000/api"; // HOME
+  import.meta.env.VITE_API_URL || "http://192.168.1.32:8000/api"; // HOME
 // export const BASE_API_URL =
 //   import.meta.env.VITE_API_URL || "http://192.168.1.32:8000/api";  // OFFICE
 
@@ -7,7 +7,7 @@ export const BASE_WS_URL =
   import.meta.env.VITE_WS_URL || "ws://192.168.1.32:8000";
 
 export const BASE_MEDIA_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.61:8000";
+  import.meta.env.VITE_API_URL || "http://192.168.1.32:8000";
 
 export const ENDPOINTS = {};
 
@@ -54,6 +54,66 @@ ENDPOINTS.ANNOUNCEMENT = {
   UPDATE: `${BASE_API_URL}/announcements/update-announcement/`,  // POST
   DELETE: `${BASE_API_URL}/announcements/delete-announcement/`,  // DELETE
 };
+
+
+
+// LIST POST ROUTES 
+// {
+//     "search":"",
+//     "page_number":1,
+//     "page_size":25,
+//     "ids":[]
+// }
+
+// ====================== GALLERY =====================
+ENDPOINTS.GALLERY = {
+  LIST: `${BASE_API_URL}/gallery/get-gallery-items/`, // POST 
+  ADD: `${BASE_API_URL}/gallery/add-gallery-item/`,  // POST
+  UPDATE: `${BASE_API_URL}/gallery/update-gallery-item/`,  // POST
+  DELETE: `${BASE_API_URL}/gallery/delete-gallery-item/`,  // DELETE
+};
+
+// Fields -> title , description , file , file_type , button_text , button_url , is_active
+// extra -> update , delete : pk 
+
+
+// ====================== CAMPAIGN =====================
+ENDPOINTS.CAMPAIGN = {
+  LIST: `${BASE_API_URL}/campaign/get-campaigns/`, // POST 
+  ADD: `${BASE_API_URL}/campaign/add-campaign/`,  // POST
+  UPDATE: `${BASE_API_URL}/campaign/update-campaign/`,  // POST
+  DELETE: `${BASE_API_URL}/campaign/delete-campaign/`,  // DELETE
+};
+// Fields -> title ,subtitle , html_body , is_active , goal_amount ( 24000 ) , collected_amount , button_text , button_url , youtube_video_id , instagram_link , twitter_link , wikipedia_link , website_link , website_link , other_field_json "{}" , thumbnail , video_or_file 
+
+
+
+
+// ====================== NEWS =====================
+ENDPOINTS.NEWS = {
+  LIST: `${BASE_API_URL}/news/get-news/`, // POST 
+  ADD: `${BASE_API_URL}/news/add-news/`,  // POST
+  UPDATE: `${BASE_API_URL}/news/update-news/`,  // POST
+  DELETE: `${BASE_API_URL}/news/delete-news/`,  // DELETE
+};
+
+
+// Fields -> title ,subtitle , html_body , is_active , button_text , button_url , youtube_video_id , instagram_link , twitter_link , wikipedia_link , website_link , website_link , other_field_json "{}" , thumbnail , video_or_file 
+
+
+// ====================== EVENT =====================
+ENDPOINTS.EVENT = {
+  LIST: `${BASE_API_URL}/event/get-events/`, // POST 
+  ADD: `${BASE_API_URL}/event/add-event/`,  // POST
+  UPDATE: `${BASE_API_URL}/event/update-event/`,  // POST
+  DELETE: `${BASE_API_URL}/event/delete-event/`,  // DELETE
+};
+
+// Fields -> title ,subtitle , html_body , is_active , button_text , button_url , youtube_video_id , instagram_link , twitter_link , wikipedia_link , website_link , website_link , other_field_json "{}" , thumbnail , video_or_file 
+
+
+
+
 
 // ====================== TESTIMONIALS =====================
 ENDPOINTS.TESTIMONIALS = {

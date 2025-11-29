@@ -1,229 +1,214 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import JoditEditor from "jodit-react";
 
 import { addTestimonial } from "../../../services/testimonial.service";
+import MediaUploader from "../../../components/admin/Helps/MediaUploader/MediaUploader";
+import RichTextEditor from "../../../components/admin/Helps/RichTextEditor";
 
 export default function AddTestimonial() {
-    const navigate = useNavigate();
-    const editor = useRef(null);
-    const inputRef = useRef(null);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
 
-    const [loading, setLoading] = useState(false);
-    const [file, setFile] = useState(null);
-    const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const [file, setFile] = useState(null);
 
-    const [form, setForm] = useState({
-        person_name: "",
-        title: "",
-        message: "",
-        company: "",
-        designation: "",
-        is_active: 1
+  const [form, setForm] = useState({
+    person_name: "",
+    title: "",
+    message: "",
+    company: "",
+    designation: "",
+    is_active: 1,
+  });
+
+  useEffect(() => {
+    setTimeout(() => inputRef.current?.focus(), 250);
+  }, []);
+
+  // ================= FILE HANDLER =================
+  const handleMediaChange = (file) => {
+    if (!file) return;
+
+    setFile(file);
+    setPreview({
+      url: URL.createObjectURL(file),
+      type: "image",
     });
+  };
 
-    useEffect(() => {
-        setTimeout(() => {
-            inputRef.current?.focus();
-        }, 250);
-    }, []);
+  // ================= SUBMIT =================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // ================= FILE CHANGE =================
-    const handleFile = (e) => {
-        const selected = e.target.files[0];
-        if (!selected) return;
+    if (!form.person_name.trim()) return toast.error("Name is required");
+    if (!form.message.trim()) return toast.error("Message is required");
+    if (!file) return toast.error("Image is required");
 
-        setFile(selected);
+    setLoading(true);
+    const toastId = toast.loading("Adding testimonial...");
 
-        setPreview({
-            type: "image",
-            url: URL.createObjectURL(selected)
-        });
-    };
+    try {
+      const fd = new FormData();
 
-    // ================= SUBMIT =================
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+      Object.keys(form).forEach((key) => fd.append(key, form[key]));
+      fd.append("image", file);
 
-        if (!form.person_name.trim())
-            return toast.error("Name is required");
+      await addTestimonial(fd);
 
-        if (!form.message.trim())
-            return toast.error("Message is required");
+      toast.success("Testimonial added successfully ✅", { id: toastId });
+      navigate("/admin/testimonials");
+    } catch (error) {
+      console.error(error);
 
-        if (!file)
-            return toast.error("Image is required");
+      toast.error(
+        error?.response?.data?.message ||
+        error?.response?.data?.detail ||
+        "Failed to add testimonial ❌",
+        { id: toastId }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setLoading(true);
-        const toastId = toast.loading("Adding testimonial...");
+  return (
+    <div className="max-width">
 
-        try {
-            const fd = new FormData();
+      {/* ================= HEADER (Sticky) ================= */}
+      <div className="sticky-header d-flex justify-content-between align-items-center">
+        <div>
+          <ol className="breadcrumb mb-1">
+             <li className="breadcrumb-item">
+              <Link to="/admin/dashboard">Dashboard</Link>
+            </li>
+            <li className="breadcrumb-item">
+              <Link to="/admin/testimonials">Testimonials</Link>
+            </li>
+            <li className="breadcrumb-item active">Add Testimonial</li>
+          </ol>
+          <h4 className="fw-semibold mb-0">Add New Testimonial</h4>
+        </div>
 
-            Object.keys(form).forEach((key) => {
-                fd.append(key, form[key]);
-            });
+        <button
+          className="btn btn-dark px-4"
+          disabled={loading}
+          onClick={handleSubmit}
+        >
+          {loading ? "Saving..." : "Save Testimonial"}
+        </button>
+      </div>
 
-            fd.append("image", file); // ✅ send as file
+      {/* ================= CARD WRAPPER ================= */}
+      <div className="card p-4 border-0 shadow-sm">
 
-            await addTestimonial(fd);
+        {/* 📌 IMAGE UPLOAD (TOP SAME AS AddBanner) */}
+        <h6 className="fw-bold text-uppercase mb-3">Upload Image</h6>
 
-            toast.success("Testimonial added successfully ✅", { id: toastId });
+        <MediaUploader
+          label="Image"
+          accept="image"
+          multiple={false}
+          onChange={handleMediaChange}
+        />
 
-            navigate("/admin/testimonials");
+        {/* PREVIEW */}
+        {preview && (
+          <div className="mt-3">
+            <img
+              src={preview.url}
+              alt="preview"
+              className="rounded shadow"
+              style={{ maxHeight: "200px" }}
+            />
+          </div>
+        )}
 
-        } catch (error) {
-            console.error(error);
+        <hr className="my-4" />
 
-            const msg =
-                error?.response?.data?.message ||
-                error?.response?.data?.detail ||
-                "Failed to add testimonial ❌";
+        {/* 📌 DETAILS SECTION */}
+        <h6 className="fw-bold text-uppercase mb-3">Testimonial Details</h6>
 
-            toast.error(msg, { id: toastId });
+        <div className="row g-4">
 
-        } finally {
-            setLoading(false);
-        }
-    };
+          {/* NAME */}
+          <div className="col-md-6">
+            <label className="form-label">Person Name</label>
+            <input
+              ref={inputRef}
+              className="form-control"
+              value={form.person_name}
+              onChange={(e) => setForm({ ...form, person_name: e.target.value })}
+            />
+          </div>
 
-    return (
-        <>
-            {/* ================= TOP BAR ================= */}
-            <nav className="d-flex justify-content-between align-items-center mb-3">
-                <ol className="breadcrumb mb-0">
-                    <li className="breadcrumb-item">
-                        <a href="/admin/dashboard">Dashboard</a>
-                    </li>
-                    <li className="breadcrumb-item">
-                        <a href="/admin/testimonials">Testimonials</a>
-                    </li>
-                    <li className="breadcrumb-item active">Add Testimonial</li>
-                </ol>
+          {/* TITLE */}
+          <div className="col-md-6">
+            <label className="form-label">Title</label>
+            <input
+              className="form-control"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+            />
+          </div>
 
-                <button
-                    className="btn btn-dark"
-                    disabled={loading}
-                    onClick={handleSubmit}
-                >
-                    {loading ? "Saving..." : "Save Testimonial"}
-                </button>
-            </nav>
+          {/* COMPANY */}
+          <div className="col-md-6">
+            <label className="form-label">Company</label>
+            <input
+              className="form-control"
+              value={form.company}
+              onChange={(e) => setForm({ ...form, company: e.target.value })}
+            />
+          </div>
 
-            <div className="card border-0 p-3">
-                <form onSubmit={handleSubmit}>
-                    <div className="row g-3">
+          {/* DESIGNATION */}
+          <div className="col-md-6">
+            <label className="form-label">Designation</label>
+            <input
+              className="form-control"
+              value={form.designation}
+              onChange={(e) => setForm({ ...form, designation: e.target.value })}
+            />
+          </div>
 
-                        {/* NAME */}
-                        <div className="col-md-6">
-                            <label className="form-label">Person Name</label>
-                            <input
-                                ref={inputRef}
-                                className="form-control"
-                                value={form.person_name}
-                                onChange={(e) =>
-                                    setForm({ ...form, person_name: e.target.value })
-                                }
-                            />
-                        </div>
+          {/* MESSAGE */}
+          <div className="col-12">
+            <RichTextEditor
+              label="Message"
+              value={form.message}
+              height={300}
+              onChange={(content) =>
+                setForm({ ...form, message: content })
+              }
+            />
+          </div>
 
-                        {/* TITLE */}
-                        <div className="col-md-6">
-                            <label className="form-label">Title</label>
-                            <input
-                                className="form-control"
-                                value={form.title}
-                                onChange={(e) =>
-                                    setForm({ ...form, title: e.target.value })
-                                }
-                            />
-                        </div>
+        </div>
 
-                        {/* COMPANY */}
-                        <div className="col-md-6">
-                            <label className="form-label">Company</label>
-                            <input
-                                className="form-control"
-                                value={form.company}
-                                onChange={(e) =>
-                                    setForm({ ...form, company: e.target.value })
-                                }
-                            />
-                        </div>
+        <hr className="my-4" />
 
-                        {/* DESIGNATION */}
-                        <div className="col-md-6">
-                            <label className="form-label">Designation</label>
-                            <input
-                                className="form-control"
-                                value={form.designation}
-                                onChange={(e) =>
-                                    setForm({ ...form, designation: e.target.value })
-                                }
-                            />
-                        </div>
+        {/* 📌 STATUS SECTION */}
+        <h6 className="fw-bold text-uppercase mb-3">Visibility</h6>
 
-                        {/* MESSAGE - JODIT */}
-                        <div className="col-12">
-                            <label className="form-label">Message</label>
-                            <JoditEditor
-                                ref={editor}
-                                value={form.message}
-                                onChange={(content) =>
-                                    setForm({ ...form, message: content })
-                                }
-                            />
-                        </div>
+        <div className="col-md-4 d-flex align-items-center">
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={form.is_active === 1}
+              onChange={(e) =>
+                setForm({ ...form, is_active: e.target.checked ? 1 : 0 })
+              }
+            />
+            <span className="slider round"></span>
+          </label>
+          <span className="ms-2 fw-semibold">
+            {form.is_active === 1 ? "Active" : "Draft"}
+          </span>
+        </div>
 
-                        {/* IMAGE */}
-                        <div className="col-md-6">
-                            <label className="form-label">Image</label>
-                            <input
-                                type="file"
-                                className="form-control"
-                                accept="image/*"
-                                onChange={handleFile}
-                            />
-
-                            {/* IMAGE PREVIEW */}
-                            {preview && (
-                                <div className="mt-2 d-flex align-items-end">
-                                    <img
-                                        src={preview.url}
-                                        alt="preview"
-                                        className="rounded shadow"
-                                        style={{ maxHeight: "200px" }}
-                                    />
-                                </div>
-                            )}
-
-                        </div>
-
-
-                        {/* STATUS */}
-                        <div className="col-md-6 d-flex align-items-end mt-3">
-                            <label className="switch">
-                                <input
-                                    type="checkbox"
-                                    checked={form.is_active === 1}
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            is_active: e.target.checked ? 1 : 0
-                                        })
-                                    }
-                                />
-                                <span className="slider round"></span>
-                            </label>
-                            <span className="ms-2 fw-semibold">
-                                {form.is_active === 1 ? "Active" : "Draft"}
-                            </span>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </>
-    );
+      </div>
+    </div>
+  );
 }

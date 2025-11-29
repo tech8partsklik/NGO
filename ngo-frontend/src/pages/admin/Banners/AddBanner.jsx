@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-
 import { addBanner } from "../../../services/banner.service";
+import UrlSelector from "../../../components/admin/Helps/UrlSelector";
+import MediaUploader from "../../../components/admin/Helps/MediaUploader/MediaUploader";
+import RichTextEditor from "../../../components/admin/Helps/RichTextEditor";
 
 export default function AddBanner() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export default function AddBanner() {
   const [form, setForm] = useState({
     title: "",
     subtitle: "",
+    description: "",
     position: "",
     file_type: "Image",
     button_text: "",
@@ -31,30 +34,22 @@ export default function AddBanner() {
     }));
   };
 
-  // FILE CHANGE
-  const handleFile = (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-
-    setFile(selectedFile);
-
-    const url = URL.createObjectURL(selectedFile);
-    setPreview({
-      type: selectedFile.type.startsWith("video") ? "video" : "image",
-      url,
-    });
-
-    setForm((prev) => ({
-      ...prev,
-      file_type: selectedFile.type.startsWith("video") ? "Video" : "Image",
-    }));
-  };
-
-  // SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!file) return toast.error("Please select image or video");
+
+    // --------------------------
+    // Detect file type on submit
+    // --------------------------
+    const ext = file.name.split(".").pop().toLowerCase();
+    const isVideo = ["mp4", "mov", "avi", "wmv", "flv", "mkv", "webm"].includes(ext);
+    const fileType = isVideo ? "Video" : "Image";
+
+    // Inject file_type before upload
+    const updatedForm = {
+      ...form,
+      file_type: fileType,
+    };
 
     setLoading(true);
     const toastId = toast.loading("Uploading banner...");
@@ -62,135 +57,79 @@ export default function AddBanner() {
     try {
       const fd = new FormData();
 
-      Object.keys(form).forEach((key) => {
-        fd.append(key, form[key]);
-      });
+      // Append updated form
+      Object.keys(updatedForm).forEach((key) => fd.append(key, updatedForm[key]));
 
+      // Append file
       fd.append("file", file);
 
       await addBanner(fd);
 
-      toast.success("Banner added successfully ✅", { id: toastId });
+      toast.success("Banner added successfully ", { id: toastId });
       navigate("/admin/banners");
+
     } catch (error) {
       console.error(error);
-
-      const msg =
-        error?.response?.data?.message || "Failed to add banner ❌";
-
-      toast.error(msg, { id: toastId });
+      toast.error(
+        error?.response?.data?.message || "Failed to add banner",
+        { id: toastId }
+      );
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <>
 
-      {/* ================= BREADCRUMB + SAVE ================= */}
-      <nav className="d-flex justify-content-between align-items-center mb-3">
-        <ol className="breadcrumb mb-0">
-          <li className="breadcrumb-item">
-            <a href="/admin/dashboard">Dashboard</a>
-          </li>
-          <li className="breadcrumb-item">
-            <a href="/admin/banners">Banners</a>
-          </li>
-          <li className="breadcrumb-item active">Add Banner</li>
-        </ol>
 
-        <button
-          className="btn btn-dark"
-          disabled={loading}
-          onClick={handleSubmit}
-        >
-          {loading ? "Saving..." : "Save Banner"}
-        </button>
-      </nav>
-
-      <div className="card border-0 p-2">
-
-        {/* <h5 className="mb-4">
-          <i className="fa-solid fa-image me-2"></i>
-          Add New Banner
-        </h5> */}
-
-        <form onSubmit={handleSubmit}>
-
-          {/* ================= TOGGLES FIRST ✅ ================= */}
-          <div className="row gy-3 mb-4 align-items-end">
-
-            {/* STATUS */}
-            <div className="col-md-4">
-              <label className="form-label d-block">Status</label>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={form.is_active == 1}
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      is_active: e.target.checked ? 1 : 0,
-                    }))
-                  }
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className="ms-2 fw-semibold">
-                {form.is_active == 1 ? "Active" : "Inactive"}
-              </span>
-            </div>
-
-            {/* MOBILE */}
-            <div className="col-md-4">
-              <label className="form-label d-block">Mobile</label>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={form.is_phone == 1}
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      is_phone: e.target.checked ? 1 : 0,
-                    }))
-                  }
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className="ms-2 fw-semibold">
-                {form.is_phone == 1 ? "Enabled" : "Disabled"}
-              </span>
-            </div>
-
-            {/* DESKTOP */}
-            <div className="col-md-4">
-              <label className="form-label d-block">Desktop</label>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={form.is_desktop == 1}
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      is_desktop: e.target.checked ? 1 : 0,
-                    }))
-                  }
-                />
-                <span className="slider round"></span>
-              </label>
-              <span className="ms-2 fw-semibold">
-                {form.is_desktop == 1 ? "Enabled" : "Disabled"}
-              </span>
-            </div>
-
+      <div className="max-width">
+        {/* HEADER */}
+        <div className="sticky-header d-flex justify-content-between align-items-center">
+          <div>
+            <ol className="breadcrumb mb-1">
+              <li className="breadcrumb-item">
+                <a href="/admin/dashboard">Dashboard</a>
+              </li>
+              <li className="breadcrumb-item">
+                <a href="/admin/banners">Banners</a>
+              </li>
+              <li className="breadcrumb-item active">Add Banner</li>
+            </ol>
+            <h4 className="fw-semibold mb-0">Add New Banner</h4>
           </div>
 
-          <hr className="my-4" />
+          <button
+            className="btn btn-dark px-4"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Saving..." : "Save Banner"}
+          </button>
+        </div>
 
-          {/* ================= FORM FIELDS ================= */}
-          <div className="row g-3">
+        <div className="card p-4 border-0 shadow-sm">
 
-            {/* TITLE */}
+          {/* FILE UPLOAD */}
+          <h6 className="fw-bold text-uppercase mb-3">Upload Banner File</h6>
+
+          <MediaUploader
+            label="Media"
+            accept="both"
+            multiple={false}
+            onChange={(file) => setFile(file)}
+          />
+
+
+
+          <hr />
+
+          {/* BANNER DETAILS */}
+          <h6 className="fw-bold text-uppercase mb-3">Banner Details</h6>
+
+          <div className="row g-4">
+
             <div className="col-md-6">
               <label className="form-label">Title</label>
               <input
@@ -202,7 +141,6 @@ export default function AddBanner() {
               />
             </div>
 
-            {/* SUB TITLE */}
             <div className="col-md-6">
               <label className="form-label">Subtitle</label>
               <input
@@ -213,7 +151,20 @@ export default function AddBanner() {
               />
             </div>
 
-            {/* POSITION */}
+            {/* DESCRIPTION (JODIT) */}
+            <div className="col-12">
+              <RichTextEditor
+                label="Description"
+                value={form.description}
+                height={600}
+                onChange={(content) =>
+                  setForm(prev => ({ ...prev, description: content }))
+                }
+              />
+            </div>
+
+
+
             <div className="col-md-4">
               <label className="form-label">Position</label>
               <input
@@ -237,61 +188,101 @@ export default function AddBanner() {
               />
             </div>
 
-            {/* BUTTON URL */}
+            {/* BUTTON URL SELECT / MANUAL */}
             <div className="col-md-4">
               <label className="form-label">Button URL</label>
-              <input
-                className="form-control"
-                name="button_url"
+
+              <UrlSelector
                 value={form.button_url}
-                onChange={handleChange}
+                onChange={(val) =>
+                  setForm((prev) => ({ ...prev, button_url: val }))
+                }
               />
             </div>
+
 
           </div>
 
-          <hr className="my-4" />
+          <hr className="mt-4" />
 
-          {/* ================= FILE UPLOAD LAST ✅ ================= */}
-          <div className="row">
 
-            <div className="col-md-6 mb-3">
-              <label className="form-label">
-                Select Banner (Image / Video)
-              </label>
-              <input
-                type="file"
-                className="form-control"
-                accept="image/*,video/*"
-                onChange={handleFile}
-              />
-            </div>
 
-            {preview && (
-              <div className="col-md-6 text-center mt-3">
-                {preview.type === "image" ? (
-                  <img
-                    src={preview.url}
-                    style={{ maxHeight: "280px" }}
-                    className="rounded shadow"
+
+
+          {/* VISIBILITY SETTINGS */}
+          <h6 className="fw-bold text-uppercase mb-3">Visibility Settings</h6>
+
+          <div className="row gy-4 mb-4">
+            {/* STATUS */}
+            <div className="col-md-4">
+              <label className="form-label mb-1">Status</label>
+              <div className="d-flex align-items-center">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={form.is_active == 1}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        is_active: e.target.checked ? 1 : 0,
+                      }))
+                    }
                   />
-                ) : (
-                  <video
-                    src={preview.url}
-                    autoPlay
-                    muted
-                    loop
-                    controls
-                    style={{ maxHeight: "280px" }}
-                    className="rounded shadow"
-                  />
-                )}
+                  <span className="slider round"></span>
+                </label>
+                <span className="ms-2 fw-semibold">
+                  {form.is_active ? "Active" : "Inactive"}
+                </span>
               </div>
-            )}
+            </div>
 
+            {/* MOBILE */}
+            <div className="col-md-4">
+              <label className="form-label mb-1">Mobile</label>
+              <div className="d-flex align-items-center">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={form.is_phone == 1}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        is_phone: e.target.checked ? 1 : 0,
+                      }))
+                    }
+                  />
+                  <span className="slider round"></span>
+                </label>
+                <span className="ms-2 fw-semibold">
+                  {form.is_phone ? "Enabled" : "Disabled"}
+                </span>
+              </div>
+            </div>
+
+            {/* DESKTOP */}
+            <div className="col-md-4">
+              <label className="form-label mb-1">Desktop</label>
+              <div className="d-flex align-items-center">
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={form.is_desktop == 1}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        is_desktop: e.target.checked ? 1 : 0,
+                      }))
+                    }
+                  />
+                  <span className="slider round"></span>
+                </label>
+                <span className="ms-2 fw-semibold">
+                  {form.is_desktop ? "Enabled" : "Disabled"}
+                </span>
+              </div>
+            </div>
           </div>
-
-        </form>
+        </div>
 
       </div>
     </>

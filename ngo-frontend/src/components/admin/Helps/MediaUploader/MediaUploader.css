@@ -1,0 +1,8 @@
+.media-uploader.drag-active {
+  border-color: #3b82f6 !important;
+  background: #eff6ff !important;
+}
+
+.media-uploader:hover {
+  background: #f3f4f6;
+}
