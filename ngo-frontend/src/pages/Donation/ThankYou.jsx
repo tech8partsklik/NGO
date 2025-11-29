@@ -43,8 +43,9 @@ export default function ThankYou() {
 
                     {/* HEADLINE */}
                     <h1 className="thankyou-title">
-                        Thank You <span>{donorName}</span>
+                        Thank You, <span className="donor-highlight">{donorName}</span>
                     </h1>
+
 
                     <p className="thankyou-text">
                         You are officially our <strong>#{donorNumber}</strong> supporter.
@@ -58,16 +59,6 @@ export default function ThankYou() {
                     <p className="thankyou-cause">
                         For: <strong>{cause}</strong>
                     </p>
-
-                    {/* IMPACT IMAGE */}
-                    {/* <div className="impact-image-wrap">
-                        <img
-                            //   src="/images/thank-you-impact.png"
-                            src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png"
-                            alt="Impact"
-                            className="impact-image"
-                        />
-                    </div> */}
 
                     <p className="thankyou-message">
                         Your kindness will help provide food, education and hope to those in need.

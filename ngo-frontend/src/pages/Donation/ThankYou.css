@@ -1,24 +1,27 @@
 .thankyou-section {
-  min-height: 75vh;
+  min-height: 100vh;
   display: flex;
+  justify-content: center;
   align-items: center;
+  padding: 2rem;
   background: linear-gradient(135deg, #f8fafc, #ffffff);
 }
 
 .thankyou-card {
   background: white;
-  padding: 3rem 1.5rem;
-  border-radius: 26px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.05);
-  max-width: 620px;
-  animation: popUp 0.7s ease;
+  padding: 2rem 1.2rem;
+  border-radius: 1.4rem;
+  max-width: 30rem; /* ~480px but responsive */
+  width: 100%;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.05);
+  animation: popUp 0.6s ease;
 }
 
 /* Animation */
 @keyframes popUp {
   from {
     opacity: 0;
-    transform: translateY(25px) scale(0.95);
+    transform: translateY(1.2rem) scale(0.96);
   }
   to {
     opacity: 1;
@@ -28,94 +31,86 @@
 
 /* Check Icon */
 .thankyou-icon {
-  font-size: 80px;
+  font-size: 3.5rem;
   color: #16a34a;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 /* Title */
 .thankyou-title {
-  font-size: 2.4rem;
-  font-weight: 800;
-  margin-bottom: 5px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
   color: #0f172a;
 }
 
+.donor-highlight {
+    color: #059669;
+    font-weight: 600;
+    font-style: italic;
+}
+
+
 /* Text */
 .thankyou-text {
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: #475569;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 /* Amount */
 .thankyou-amount {
-  font-size: 3.3rem;
-  font-weight: 900;
+  font-size: 2.6rem;
+  font-weight: 700;
   color: #0f172a;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin: 1rem 0 0.4rem;
 }
 
 /* Cause */
 .thankyou-cause {
   font-size: 0.95rem;
   color: #64748b;
-  margin-bottom: 20px;
-}
-
-/* Impact Image */
-.impact-image-wrap {
-  margin: 25px 0;
-  animation: floatImage 3s ease-in-out infinite;
-}
-
-@keyframes floatImage {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.impact-image {
-  max-width: 200px;
+  margin-bottom: 1.2rem;
 }
 
 /* Message */
 .thankyou-message {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #475569;
-  margin: 20px 0 35px;
+  margin: 1rem 0 2rem;
 }
 
-/* Actions */
+/* Buttons */
 .thankyou-actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 0.8rem;
   flex-wrap: wrap;
 }
 
 .thankyou-actions .btn {
-  padding: 10px 22px;
-  border-radius: 40px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
   font-weight: 600;
+  font-size: 0.9rem;
 }
 
 /* SHARE */
 .share-box {
-  margin-top: 25px;
+  margin-top: 1.2rem;
 }
 
 .share-btn {
-  width: 38px;
-  height: 38px;
+  width: 2.1rem;
+  height: 2.1rem;
   border: none;
   border-radius: 50%;
-  margin: 0 6px;
+  margin: 0 0.4rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: white;
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
 .share-btn.linkedin {
@@ -123,7 +118,7 @@
 }
 
 .share-btn.twitter {
-  background: #000000;
+  background: #000;
 }
 
 .share-btn.copy {
@@ -131,6 +126,9 @@
 }
 
 .share-btn:hover {
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-0.15rem) scale(1.05);
   opacity: 0.9;
 }
+
+
+

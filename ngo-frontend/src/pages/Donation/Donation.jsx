@@ -154,7 +154,7 @@ export default function Donation() {
         <div className="container-xl">
           <div className="row justify-content-center">
 
-            <div className="col-lg-7">
+            <div className="col-lg-8">
               <div className="donation-card">
 
                 <h2 className="text-center fw-bold mb-2">Support Our Mission</h2>
@@ -165,7 +165,7 @@ export default function Donation() {
                 <form onSubmit={handlePayment}>
 
                   {/* QUICK AMOUNTS */}
-                  <label className="form-label fw-semibold mb-2">
+                  <label className="form-label mb-2">
                     Select Amount
                   </label>
 
@@ -183,8 +183,8 @@ export default function Donation() {
                   </div>
 
                   {/* CUSTOM AMOUNT */}
-                  <div className="mb-4">
-                    <label className="form-label fw-semibold">Custom Amount (₹)</label>
+                  <div className="mb-3">
+                    <label className="form-label">Custom Amount (₹)</label>
                     <input
                       type="number"
                       name="amount"
@@ -192,12 +192,13 @@ export default function Donation() {
                       value={form.amount}
                       min="1"
                       onChange={handleChange}
+                      required
                     />
                   </div>
 
                   {/* CAUSE */}
-                  <div className="mb-3">
-                    <label className="form-label fw-semibold">Choose a Cause</label>
+                  <div className="mb-2">
+                    <label className="form-label">Choose a Cause</label>
                     <select
                       className="form-select custom-input"
                       value={form.cause}
@@ -215,7 +216,7 @@ export default function Donation() {
 
                   <div className="row">
                     <div className="col-md-6 mb-3">
-                      <label className="form-label fw-semibold">Full Name *</label>
+                      <label className="form-label">Full Name *</label>
                       <input
                         type="text"
                         name="full_name"
@@ -226,7 +227,7 @@ export default function Donation() {
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label className="form-label fw-semibold">Email *</label>
+                      <label className="form-label">Email *</label>
                       <input
                         type="email"
                         name="email"
@@ -238,7 +239,7 @@ export default function Donation() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label fw-semibold">Phone</label>
+                    <label className="form-label">Phone</label>
                     <input
                       type="number"
                       name="phone"
@@ -286,7 +287,7 @@ export default function Donation() {
               </div>
             </div>
 
-            <div className="col-lg-5 mt-5 mt-lg-0 d-none d-lg-block">
+            <div className="col-lg-4 mt-5 mt-lg-0 d-none d-lg-block">
               <div className="impact-box">
 
                 <div className="impact-header">
