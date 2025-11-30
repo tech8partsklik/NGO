@@ -124,7 +124,7 @@ export default function AllAnnouncements() {
                         ) : announcements.length ? (
                             announcements.map((a, i) => (
                                 <tr key={a.id}>
-                                    <td>{i + 1}</td>
+                                    <td>{a.id}</td>
                                     <td>{a.text}</td>
 
                                     <td>
@@ -183,7 +183,7 @@ export default function AllAnnouncements() {
             {showDeleteModal && (
                 <ConfirmDeleteModal
                     show={showDeleteModal}
-                    onHide={handleCloseDeleteModal} 
+                    onHide={handleCloseDeleteModal}
                     onConfirm={handleDelete}
                     loading={deleteLoading}
                     title="Delete Announcement"

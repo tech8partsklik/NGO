@@ -43,7 +43,7 @@ export default function Navbar() {
           {/* RIGHT - ACTIONS */}
           <div className="top-actions">
 
-            {navbar?.roles?.manager_login && (
+            {/* {navbar?.roles?.manager_login && (
               <Link to="/manager/login" className="login-link">
                 Manager Login
               </Link>
@@ -53,7 +53,7 @@ export default function Navbar() {
               <Link to="/coordinator/login" className="login-link">
                 Coordinator Login
               </Link>
-            )}
+            )} */}
 
             {site?.donate_url && (
               <Link
@@ -68,8 +68,8 @@ export default function Navbar() {
             )}
 
             {!user ? (
-              <Link to="/admin/login" className="login-link">
-                Admin Login
+              <Link to="/login" className="login-link">
+                Login
               </Link>
             ) : (
               <button onClick={logout} className="logout-link">

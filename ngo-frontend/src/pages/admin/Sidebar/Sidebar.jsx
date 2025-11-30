@@ -58,6 +58,56 @@ const ADMIN_NAVS = [
         path: "/admin/campaigns",
         icon: "fa-bullhorn"
       },
+      {
+        name: "News",
+        path: "/admin/news",
+        icon: "fa-newspaper"
+      },
+      {
+        name: "Events",
+        path: "/admin/events",
+        icon: "fa-calendar"
+      },
+      {
+        name: "Site Data Editor",
+        path: "/admin/site-data",
+        icon: "fa-database"
+      },
+      {
+        name: "About Editor",
+        path: "/admin/site-data/about",
+        icon: "fa-database"
+      },
+      {
+        name: "Mission Editor",
+        path: "/admin/site-data/mission",
+        icon: "fa-database"
+      },
+      {
+        name: "Vision Editor",
+        path: "/admin/site-data/vision",
+        icon: "fa-database"
+      },
+      {
+        name: "Objective Editor",
+        path: "/admin/site-data/objective",
+        icon: "fa-database"
+      },
+      {
+        name: "Achievement Editor",
+        path: "/admin/site-data/achievement",
+        icon: "fa-database"
+      },
+      {
+        name: "Certificates",
+        path: "/admin/certificates",
+        icon: "fa-certificate"
+      },
+      {
+        name: "YouTube Videos",
+        path: "/admin/youtube-videos",
+        icon: "fa-youtube"
+      },
     ],
   }
 ];

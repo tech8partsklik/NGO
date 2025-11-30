@@ -191,3 +191,52 @@ img {
 
 
 
+
+/* ===== Filter Selection Modal =====  */
+
+.filter-modal {
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  margin-left: -5px;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 5;
+  /* width: 200px; */
+  text-align: start;
+}
+.filter-modal .bg {
+  background: whitesmoke !important;
+  padding: 0.2rem ;
+  border-radius: 5px;
+  padding-left: 0.5rem;
+}
+
+.filter-modal input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+/* ===== Filter =====  */
+
+.filter-modal .filter-options,
+.filter-options {
+    background: whitesmoke;
+    border-radius: 4px;
+    padding: 0.5rem;
+    max-height: 180px;
+    overflow: auto;
+    min-width: 170px;
+}
+
+.filter-modal .filter-options label,
+.filter-options label {
+    font-size: 0.9rem;
+
+}
+
+.table-column-selection h5,
+.filter-modal h5 {
+    font-size: 1rem;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -12,14 +12,14 @@ export default function AddCampaign() {
     const inputRef = useRef(null);
 
     const [loading, setLoading] = useState(false);
-    const [file, setFile] = useState(null);
-    const [preview, setPreview] = useState(null);
+    const [thumbnail, setThumbnail] = useState(null);
+    const [mediaFile, setMediaFile] = useState(null);
 
     const [form, setForm] = useState({
         title: "",
         subtitle: "",
         html_body: "",
-        goal_amount: "",
+        goal_amount: 0,
         collected_amount: 0,
         button_text: "",
         button_url: "",
@@ -29,58 +29,78 @@ export default function AddCampaign() {
         wikipedia_link: "",
         website_link: "",
         is_active: 1,
-        other_field_json: {} // as object
+        other_field_json: "{}",
     });
 
-    // other_field_json dynamic pairs
-    const [pairs, setPairs] = useState([
-        // { key: "", value: "" }
-    ]);
-
     useEffect(() => {
-        setTimeout(() => inputRef.current?.focus(), 250);
+        setTimeout(() => inputRef.current?.focus(), 300);
     }, []);
 
-    const handleMediaChange = (selectedFile) => {
-        if (!selectedFile) return;
-        setFile(selectedFile);
-        setPreview({ url: URL.createObjectURL(selectedFile) });
-    };
-
-    const addPair = () => setPairs((p) => [...p, { key: "", value: "" }]);
-    const removePair = (i) => setPairs((p) => p.filter((_, idx) => idx !== i));
-    const updatePair = (i, field, val) => {
-        setPairs((p) => p.map((row, idx) => (idx === i ? { ...row, [field]: val } : row)));
-    };
-
+    // VALIDATION + SUBMIT
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.title.trim()) return toast.error("Title is required");
-        if (!file) return toast.error("Media is required");
 
-        // build JSON
-        const obj = {};
-        pairs.forEach((r) => {
-            if (r.key.trim()) obj[r.key] = r.value;
-        });
+        if (!form.title.trim()) return toast.error("Title is required");
+
+
+
+        // ===== FILE VALIDATION (Mandatory if active) =====
+        if (form.is_active === 1 && !thumbnail) {
+            return toast.error("Thumbnail is required for an active campaign");
+        }
+
+
+
+        // ===== AMOUNT VALIDATIONS =====
+        const goal = Number(form.goal_amount);
+        const collected = Number(form.collected_amount);
+
+        if (goal && (isNaN(goal) || goal <= 0)) {
+            return toast.error("Goal amount must be a positive number");
+        }
+
+        if (collected && (isNaN(collected) || collected < 0)) {
+            return toast.error("Collected amount must be zero or a positive number");
+        }
+
+        if (goal && collected && collected > goal) {
+            return toast.error("Collected cannot be greater than goal");
+        }
+
+        // ===== BUTTON FIELD VALIDATION =====
+        if (form.button_text.trim() && !form.button_url.trim()) {
+            return toast.error("Button URL is required when button text is provided");
+        }
+
+        // ===== SOCIAL LINKS =====
+        const links = [
+            { field: "instagram_link", label: "Instagram" },
+            { field: "twitter_link", label: "Twitter" },
+            { field: "wikipedia_link", label: "Wikipedia" },
+            { field: "website_link", label: "Website" },
+            { field: "youtube_video_id", label: "Youtube" },
+        ];
+
+        for (const lf of links) {
+            const val = form[lf.field];
+            if (val.trim() && !val.startsWith("http://") && !val.startsWith("https://")) {
+                return toast.error(`${lf.label} link must start with http:// or https://`);
+            }
+        }
 
         setLoading(true);
         const toastId = toast.loading("Saving campaign...");
 
         try {
             const fd = new FormData();
+            Object.keys(form).forEach((key) => fd.append(key, form[key]));
 
-            // append form fields
-            Object.keys(form).forEach((k) => {
-                if (k !== "other_field_json") fd.append(k, form[k]);
-            });
-
-            fd.append("other_field_json", JSON.stringify(obj));
-            fd.append("thumbnail", file); // media field (thumbnail or video/file)
+            if (thumbnail) fd.append("thumbnail", thumbnail);
+            if (mediaFile) fd.append("video_or_file", mediaFile);
 
             await addCampaign(fd);
 
-            toast.success("Campaign added ", { id: toastId });
+            toast.success("Campaign added successfully", { id: toastId });
             navigate("/admin/campaigns");
         } catch (err) {
             console.error(err);
@@ -92,6 +112,8 @@ export default function AddCampaign() {
 
     return (
         <div className="max-width">
+
+            {/* HEADER */}
             <div className="sticky-header d-flex justify-content-between align-items-center">
                 <div>
                     <ol className="breadcrumb mb-1">
@@ -99,7 +121,7 @@ export default function AddCampaign() {
                         <li className="breadcrumb-item"><Link to="/admin/campaigns">Campaigns</Link></li>
                         <li className="breadcrumb-item active">Add Campaign</li>
                     </ol>
-                    <h4 className="fw-semibold mb-0">Add New Campaign</h4>
+                    <h4 className="fw-semibold mb-0">Add Campaign</h4>
                 </div>
 
                 <button className="btn btn-dark px-4" disabled={loading} onClick={handleSubmit}>
@@ -107,13 +129,36 @@ export default function AddCampaign() {
                 </button>
             </div>
 
-            <div className="card p-4 shadow-sm">
+            {/* CARD */}
+            <div className="card p-4 shadow-sm border-0">
+                <div className="row g-2">
 
-                <h6 className="fw-bold text-uppercase mb-3">Upload Media </h6>
-                <MediaUploader label="Media" accept="both" multiple={false} onChange={handleMediaChange} />
+                    {/* THUMBNAIL */}
+                    <div className="col-md-6 mb-1">
+                        <h6 className="fw-bold text-uppercase mb-3">Thumbnail</h6>
+                        <MediaUploader
+                            label="Thumbnail"
+                            accept="image"
+                            multiple={false}
+                            onChange={(file) => setThumbnail(file)}
+                        />
+                    </div>
 
-                <hr className="my-4" />
+                    {/* MAIN MEDIA */}
+                    <div className="col-md-6 mb-1">
+                        <h6 className="fw-bold text-uppercase mb-3">Main Media</h6>
+                        <MediaUploader
+                            label="Media File (Image or Video)"
+                            accept="both"
+                            multiple={false}
+                            onChange={(file) => setMediaFile(file)}
+                        />
+                    </div>
+                </div>
 
+                <hr />
+
+                {/* DETAILS */}
                 <h6 className="fw-bold text-uppercase mb-3">Details</h6>
 
                 <div className="row g-4">
@@ -142,9 +187,9 @@ export default function AddCampaign() {
                     {/* HTML BODY */}
                     <div className="col-12">
                         <RichTextEditor
-                            label="HTML Body"
-                            value={form.html_body}
+                            label="Description"
                             height={300}
+                            value={form.html_body}
                             onChange={(content) => setForm({ ...form, html_body: content })}
                         />
                     </div>
@@ -153,9 +198,7 @@ export default function AddCampaign() {
                     <div className="col-md-6">
                         <label className="form-label">Goal Amount</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-solid fa-indian-rupee-sign"></i>
-                            </span>
+                            <span className="input-group-text"><i className="fa-solid fa-indian-rupee-sign"></i></span>
                             <input
                                 type="number"
                                 className="form-control rounded-start-0"
@@ -168,9 +211,7 @@ export default function AddCampaign() {
                     <div className="col-md-6">
                         <label className="form-label">Collected Amount</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-solid fa-indian-rupee-sign"></i>
-                            </span>
+                            <span className="input-group-text"><i className="fa-solid fa-indian-rupee-sign"></i></span>
                             <input
                                 type="number"
                                 className="form-control rounded-start-0"
@@ -199,13 +240,12 @@ export default function AddCampaign() {
                     </div>
 
                     {/* ===================== SOCIAL LINKS ===================== */}
+                    <h6 className="fw-bold mt-4">Social Media</h6>
 
                     <div className="col-md-6">
-                        <label className="form-label">YouTube Video ID</label>
+                        <label className="form-label">YouTube</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-brands fa-youtube text-danger"></i>
-                            </span>
+                            <span className="input-group-text bg-light"><i className="fa-brands fa-youtube text-danger"></i></span>
                             <input
                                 className="form-control rounded-start-0"
                                 value={form.youtube_video_id}
@@ -217,14 +257,11 @@ export default function AddCampaign() {
                     <div className="col-md-6">
                         <label className="form-label">Instagram</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-brands fa-instagram text-danger"></i>
-                            </span>
+                            <span className="input-group-text bg-light"><i className="fa-brands fa-instagram text-danger"></i></span>
                             <input
                                 className="form-control rounded-start-0"
                                 value={form.instagram_link}
                                 onChange={(e) => setForm({ ...form, instagram_link: e.target.value })}
-                                placeholder="https://instagram.com/..."
                             />
                         </div>
                     </div>
@@ -232,14 +269,11 @@ export default function AddCampaign() {
                     <div className="col-md-6">
                         <label className="form-label">Twitter</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-brands fa-twitter text-primary"></i>
-                            </span>
+                            <span className="input-group-text bg-light"><i className="fa-brands fa-twitter text-primary"></i></span>
                             <input
                                 className="form-control rounded-start-0"
                                 value={form.twitter_link}
                                 onChange={(e) => setForm({ ...form, twitter_link: e.target.value })}
-                                placeholder="https://x.com/..."
                             />
                         </div>
                     </div>
@@ -247,9 +281,7 @@ export default function AddCampaign() {
                     <div className="col-md-6">
                         <label className="form-label">Wikipedia</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-brands fa-wikipedia-w"></i>
-                            </span>
+                            <span className="input-group-text bg-light"><i className="fa-brands fa-wikipedia-w text-dark"></i></span>
                             <input
                                 className="form-control rounded-start-0"
                                 value={form.wikipedia_link}
@@ -258,12 +290,10 @@ export default function AddCampaign() {
                         </div>
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <label className="form-label">Website</label>
                         <div className="input-group">
-                            <span className="input-group-text">
-                                <i className="fa-solid fa-globe"></i>
-                            </span>
+                            <span className="input-group-text bg-light"><i className="fa fa-globe text-success"></i></span>
                             <input
                                 className="form-control rounded-start-0"
                                 value={form.website_link}
@@ -274,36 +304,17 @@ export default function AddCampaign() {
 
                 </div>
 
-
                 <hr className="my-4" />
 
-                <h6 className="fw-bold text-uppercase mb-3">Other Fields (key → value)</h6>
-                <div className="mb-3">
-                    {pairs.map((p, i) => (
-                        <div className="row g-2 align-items-center mb-2" key={i}>
-                            <div className="col">
-                                <input className="form-control" placeholder="Key" value={p.key} onChange={(e) => updatePair(i, "key", e.target.value)} />
-                            </div>
-                            <div className="col">
-                                <input className="form-control" placeholder="Value" value={p.value} onChange={(e) => updatePair(i, "value", e.target.value)} />
-                            </div>
-                            <div className="col-auto">
-                                <button type="button" className="btn btn-sm btn-danger" onClick={() => removePair(i)}>Remove</button>
-                            </div>
-                        </div>
-                    ))}
-
-                    <div className="text-start">
-                        <button type="button" className="btn py-1 btn-dark" onClick={addPair}>Add field</button>
-                    </div>
-                </div>
-
-                <hr className="my-4" />
-
+                {/* ACTIVE SWITCH */}
                 <h6 className="fw-bold text-uppercase mb-3">Visibility</h6>
                 <div className="col-md-4 d-flex align-items-center">
                     <label className="switch">
-                        <input type="checkbox" checked={form.is_active === 1} onChange={(e) => setForm({ ...form, is_active: e.target.checked ? 1 : 0 })} />
+                        <input
+                            type="checkbox"
+                            checked={form.is_active === 1}
+                            onChange={(e) => setForm({ ...form, is_active: e.target.checked ? 1 : 0 })}
+                        />
                         <span className="slider round"></span>
                     </label>
                     <span className="ms-2 fw-semibold">{form.is_active === 1 ? "Active" : "Inactive"}</span>

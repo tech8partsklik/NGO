@@ -80,6 +80,7 @@ export default function Login() {
                 placeholder="Enter your email"
                 value={form.email}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -91,6 +92,7 @@ export default function Login() {
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={handleChange}
+                required
               />
             </div>
 

@@ -11,6 +11,9 @@ import Pagination from "../../../common/Pagination/Pagination";
 import ConfirmDeleteModal from "../../../common/ConfirmDeleteModal";
 import { BASE_MEDIA_URL } from "../../../services/endpoints";
 
+// NEW IMPORT
+import FilterSelectionModal from "../../../components/FilterModals/FilterSelectionModal";
+
 export default function AllTestimonials() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,9 +36,15 @@ export default function AllTestimonials() {
     new URLSearchParams(location.search).get("search") || ""
   );
 
-  const [status, setStatus] = useState(
-    new URLSearchParams(location.search).get("status") || ""
+  const [selectedStatus, setSelectedStatus] = useState(
+    new URLSearchParams(location.search).get("status")?.split(",") || []
   );
+
+  // Status list for filter
+  const statusOptions = [
+    { value: "active", label: "Active" },
+    { value: "draft", label: "Draft" },
+  ];
 
   // ---------------- DELETE MODAL ----------------
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -62,7 +71,6 @@ export default function AllTestimonials() {
 
       fetchData(currentPage, searchQuery);
     } catch (err) {
-      console.error(err);
       toast.error("Delete failed ❌", { id: toastId });
     } finally {
       setDeleteLoading(false);
@@ -86,7 +94,7 @@ export default function AllTestimonials() {
       search: query,
       page_number: page,
       page_size: pageSize,
-      status
+      status: selectedStatus[0] || "",
     };
 
     try {
@@ -96,7 +104,6 @@ export default function AllTestimonials() {
       setTotalPages(res.total_pages || 0);
       setTotalRows(res.total_rows || 0);
     } catch (err) {
-      console.error(err);
       toast.error("Failed to load testimonials");
     } finally {
       setLoading(false);
@@ -106,20 +113,20 @@ export default function AllTestimonials() {
   // ---------------- FETCH ON CHANGE ----------------
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageSize, status]);
+  }, [currentPage, pageSize, selectedStatus]);
 
   // ---------------- UPDATE URL PARAMS ----------------
   useEffect(() => {
     const params = new URLSearchParams();
 
     if (searchQuery) params.set("search", searchQuery);
-    if (status) params.set("status", status);
+    if (selectedStatus.length) params.set("status", selectedStatus.join(","));
 
     params.set("current_page", currentPage);
     params.set("page_size", pageSize);
 
     navigate(`?${params.toString()}`, { replace: true });
-  }, [searchQuery, currentPage, pageSize, status]);
+  }, [searchQuery, currentPage, pageSize, selectedStatus]);
 
   // ---------------- HANDLERS ----------------
   const handlePageChange = (page) => {
@@ -129,13 +136,13 @@ export default function AllTestimonials() {
 
   const handleClearAllFilter = () => {
     setSearchQuery("");
-    setStatus("");
+    setSelectedStatus([]);
     setCurrentPage(1);
     fetchData(1, "");
   };
 
   const isFilterApplied = () => {
-    return searchQuery !== "" || status !== "";
+    return searchQuery !== "" || selectedStatus.length > 0;
   };
 
   const menus = [
@@ -144,14 +151,6 @@ export default function AllTestimonials() {
       icon: <i className="fa fa-plus me-1"></i>,
       className: "btn-dark",
       onClick: () => navigate("/admin/testimonials/add")
-    },
-    {
-      type: "dropdown",
-      label: "Quick Filter",
-      items: [
-        { name: "Active", onClick: () => setStatus("active") },
-        { name: "Draft", onClick: () => setStatus("draft") }
-      ]
     }
   ];
 
@@ -160,9 +159,7 @@ export default function AllTestimonials() {
       {/* ================= BREADCRUMB ================= */}
       <nav>
         <ol className="breadcrumb mb-2">
-          <li className="breadcrumb-item">
-            <Link to="/admin/dashboard">Dashboard</Link>
-          </li>
+          <li className="breadcrumb-item"><Link to="/admin/dashboard">Dashboard</Link></li>
           <li className="breadcrumb-item active">Testimonials</li>
         </ol>
       </nav>
@@ -191,7 +188,20 @@ export default function AllTestimonials() {
               <th>Name / Company</th>
               <th>Title</th>
               <th>Message</th>
-              <th>Status</th>
+
+              {/* FILTER IN TH */}
+              <th>
+                <FilterSelectionModal
+                  title="Status"
+                  options={statusOptions}
+                  selectedOptions={selectedStatus}
+                  onSelect={setSelectedStatus}
+                  searchable={false}
+                  selectableAll={false}
+                  multiSelection={false}
+                />
+              </th>
+
               <th style={{ width: 120 }}>Action</th>
             </tr>
           </thead>
@@ -202,18 +212,16 @@ export default function AllTestimonials() {
               [...Array(7)].map((_, i) => (
                 <tr key={i}>
                   {[...Array(7)].map((_, j) => (
-                    <td key={j}>
-                      <Skeleton height={26} />
-                    </td>
+                    <td key={j}><Skeleton height={26} /></td>
                   ))}
                 </tr>
               ))
 
             ) : testimonials.length > 0 ? (
 
-              testimonials.map((item, index) => (
+              testimonials.map((item) => (
                 <tr key={item.id}>
-                  <td>{index + 1}</td>
+                  <td>{item.id}</td>
 
                   <td>
                     <img
@@ -248,7 +256,6 @@ export default function AllTestimonials() {
                   </td>
 
                   <td className="text-nowrap">
-                    {/* EDIT - PAGE */}
                     <Link
                       to={`/admin/testimonials/${item.id}`}
                       className="btn btn-primary btn-sm me-1"
@@ -256,7 +263,6 @@ export default function AllTestimonials() {
                       <i className="fa fa-pen"></i>
                     </Link>
 
-                    {/* DELETE */}
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => openDeleteModal(item.id)}

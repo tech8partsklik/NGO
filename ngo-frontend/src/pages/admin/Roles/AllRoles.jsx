@@ -104,7 +104,7 @@ export default function AllRoles() {
                         ) : roles.length > 0 ? (
                             roles.map((role, index) => (
                                 <tr key={role.id}>
-                                    <td>{index + 1}</td>
+                                    <td>{role.id}</td>
                                     <td>{role.name}</td>
 
                                     <td className="text-nowrap">

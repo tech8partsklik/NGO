@@ -152,7 +152,7 @@ export default function AllCampaigns() {
             ) : campaigns.length > 0 ? (
               campaigns.map((c, idx) => (
                 <tr key={c.id}>
-                  <td>{idx + 1}</td>
+                  <td>{c.id}</td>
 
                   <td>
                     {c.file_type === "Video" ? (

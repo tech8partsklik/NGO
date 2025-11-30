@@ -151,7 +151,7 @@ export default function MediaUploader({
 
             {/* PREVIEW LIST */}
             {previews.length > 0 && (
-                <div className="row mt-3 g-3">
+                <div className="row mt-1 g-3">
                     {previews.map((item, idx) => (
                         <div className="col-md-3 col-6" key={idx}>
                             <div className="position-relative border rounded shadow-sm">

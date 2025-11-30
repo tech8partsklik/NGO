@@ -3,14 +3,14 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 
-import { getAllNews, deleteNews } from "../../../services/news.service";
 import FilterTopBar from "../../../common/FilterTopBar/FilterTopBar";
 import ConfirmDeleteModal from "../../../common/ConfirmDeleteModal";
 import Pagination from "../../../common/Pagination/Pagination";
 import { debounce } from "../../../utils/debounce";
 import { BASE_MEDIA_URL } from "../../../services/endpoints";
+import { deleteEvent, getAllEvents } from "../../../services/event.service";
 
-export default function AllNews() {
+export default function AllEvents() {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,13 +52,13 @@ export default function AllNews() {
         page_size: pageSize,
       };
 
-      const res = await getAllNews(payload);
+      const res = await getAllEvents(payload);
 
       setRows(res.data || []);
       setTotalPages(res.total_pages || 0);
       setTotalRows(res.total_rows || 0);
     } catch (err) {
-      toast.error("Failed to load news");
+      toast.error("Failed to load events");
     } finally {
       setLoading(false);
     }
@@ -81,10 +81,10 @@ export default function AllNews() {
 
   const menus = [
     {
-      name: "Add News",
+      name: "Add Event",
       className: "btn-dark",
       icon: <i className="fa fa-plus me-1" />,
-      onClick: () => navigate("/admin/news/add"),
+      onClick: () => navigate("/admin/events/add"),
     }
   ];
 
@@ -95,7 +95,7 @@ export default function AllNews() {
     const toastId = toast.loading("Deleting...");
 
     try {
-      await deleteNews({ pk: selectedId });
+      await deleteEvent({ pk: selectedId });
       toast.success("Deleted successfully", { id: toastId });
       setDeleteModal(false);
       fetchData(currentPage, searchQuery);
@@ -111,7 +111,7 @@ export default function AllNews() {
       <nav>
         <ol className="breadcrumb mb-2">
           <li className="breadcrumb-item"><Link to="/admin/dashboard">Dashboard</Link></li>
-          <li className="breadcrumb-item active">News</li>
+          <li className="breadcrumb-item active">Events</li>
         </ol>
       </nav>
 
@@ -180,7 +180,7 @@ export default function AllNews() {
                   </td>
 
                   <td className="text-nowrap">
-                    <Link to={`/admin/news/${item.id}`} className="btn btn-primary btn-sm me-1">
+                    <Link to={`/admin/events/${item.id}`} className="btn btn-primary btn-sm me-1">
                       <i className="fa fa-pen" />
                     </Link>
                     <button
@@ -217,8 +217,8 @@ export default function AllNews() {
         onHide={() => setDeleteModal(false)}
         onConfirm={handleDelete}
         loading={deleteLoading}
-        title="Delete News"
-        message="Are you sure you want to delete this news item?"
+        title="Delete Event"
+        message="Are you sure you want to delete this event item?"
       />
     </>
   );

@@ -36,6 +36,23 @@ import UpdateGallery from "../pages/admin/Gallery/UpdateGallery";
 import AllCampaigns from "../pages/admin/Campaigns/AllCampaigns";
 import AddCampaign from "../pages/admin/Campaigns/AddCampaign";
 import UpdateCampaign from "../pages/admin/Campaigns/UpdateCampaign";
+import AllNews from "../pages/admin/News/AllNews";
+import AddNews from "../pages/admin/News/AddNews";
+import UpdateNews from "../pages/admin/News/UpdateNews";
+import AllEvents from "../pages/admin/Event/AllEvents";
+import AddEvent from "../pages/admin/Event/AddEvent";
+import UpdateEvent from "../pages/admin/Event/UpdateEvent";
+import Donations from "../pages/admin/Donation/Donations";
+import SiteDataEditor from "../pages/admin/SiteData/SiteDataEditor";
+import AboutEditor from "../pages/admin/SiteData/AboutEditor";
+import MissionEditor from "../pages/admin/SiteData/MissionEditor";
+import VisionEditor from "../pages/admin/SiteData/VisionEditor";
+import ObjectiveEditor from "../pages/admin/SiteData/ObjectiveEditor";
+import AchievementEditor from "../pages/admin/SiteData/AchievementEditor";
+import AllCertificate from "../pages/admin/Certificate/AllCertificate";
+import CertificateAdd from "../pages/admin/Certificate/CertificateAdd";
+import CertificateEdit from "../pages/admin/Certificate/CertificateEdit";
+import YouTubeVideoManager from "../pages/admin/YouTubeVideoManager/YouTubeVideoManager";
 
 export default function AppRoutes() {
   return (
@@ -95,7 +112,36 @@ export default function AppRoutes() {
         <Route path="campaigns/:id" element={<UpdateCampaign />} />
 
 
-        <Route path="donations" element={<div>Donation Management</div>} />
+        <Route path="news" element={<AllNews />} />
+        <Route path="news/add" element={<AddNews />} />
+        <Route path="news/:id" element={<UpdateNews />} />
+
+        <Route path="events" element={<AllEvents />} />
+        <Route path="events/add" element={<AddEvent />} />
+        <Route path="events/:id" element={<UpdateEvent />} />
+
+
+
+        <Route path="donations" element={<Donations />} />
+
+
+
+        <Route path="site-data" element={<SiteDataEditor />} />
+
+        <Route path="site-data/about" element={<AboutEditor />} />
+        <Route path="site-data/mission" element={<MissionEditor />} />
+        <Route path="site-data/vision" element={<VisionEditor />} />
+        <Route path="site-data/objective" element={<ObjectiveEditor />} />
+        <Route path="site-data/achievement" element={<AchievementEditor />} />
+
+        {/* ================= CERTIFICATES ================= */}
+        <Route path="certificates" element={<AllCertificate />} />
+        <Route path="certificates/add" element={<CertificateAdd />} />
+        <Route path="certificates/:id" element={<CertificateEdit />} />
+
+        <Route path="youtube-videos" element={<YouTubeVideoManager />} />
+
+
       </Route>
 
       {/* ==================== MEMBER ==================== */}

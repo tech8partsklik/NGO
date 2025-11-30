@@ -10,6 +10,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import "react-phone-input-2/lib/style.css";
 
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css'; 
+
 
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";

@@ -1,13 +1,13 @@
 export const BASE_API_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.32:8000/api"; // HOME
+  import.meta.env.VITE_API_URL || "http://192.168.0.195:8000/api"; // HOME
 // export const BASE_API_URL =
 //   import.meta.env.VITE_API_URL || "http://192.168.1.32:8000/api";  // OFFICE
 
 export const BASE_WS_URL =
-  import.meta.env.VITE_WS_URL || "ws://192.168.1.32:8000";
+  import.meta.env.VITE_WS_URL || "ws://192.168.0.195:8000";
 
 export const BASE_MEDIA_URL =
-  import.meta.env.VITE_API_URL || "http://192.168.1.32:8000";
+  import.meta.env.VITE_API_URL || "http://192.168.0.195:8000";
 
 export const ENDPOINTS = {};
 
@@ -129,13 +129,53 @@ ENDPOINTS.SITE_CREDENTIAL = {
   GET: `${BASE_API_URL}/sitecredential/`, // GET request without params
   GET_ADMIN: `${BASE_API_URL}/get-credentials-for-admin/`,  // GET request without params
   UPDATE: `${BASE_API_URL}/site-data/update-credentials/`,  // POST
+
+
+
+
+  UPDATE_SITE_DATA: `${BASE_API_URL}/site-data/update-site-data/`,  // POST
+  GET_SITE_DATA: `${BASE_API_URL}/site-data/get-site-data/`,  // GET
+
+
+
+  GET_ABOUT_DATA: `${BASE_API_URL}/site-data/get-about-data/`,  // GET
+  UPDATE_ABOUT_DATA: `${BASE_API_URL}/site-data/update-about-data/`,  // POST
+
+  GET_MISSION_DATA: `${BASE_API_URL}/site-data/get-mission-data/`,  // GET
+  UPDATE_MISSION_DATA: `${BASE_API_URL}/site-data/update-mission-data/`,  // POST
+
+  GET_VISION_DATA: `${BASE_API_URL}/site-data/get-vision-data/`,  // GET
+  UPDATE_VISION_DATA: `${BASE_API_URL}/site-data/update-vision-data/`,  // POST
+
+
+  GET_OBJECTIVE_DATA: `${BASE_API_URL}/site-data/get-objective-data/`,      // GET
+  UPDATE_OBJECTIVE_DATA: `${BASE_API_URL}/site-data/update-objective-data/`,  // POST
+
+  GET_ACHIVEMENT_DATA: `${BASE_API_URL}/site-data/get-achivement-data/`,      // GET
+  UPDATE_ACHIVEMENT_DATA: `${BASE_API_URL}/site-data/update-achivement-data/`, // POST
+
+  GET_ACHIVEMENT_DATA: `${BASE_API_URL}/site-data/get-achivement-data/`,      // GET
+  UPDATE_ACHIVEMENT_DATA: `${BASE_API_URL}/site-data/update-achivement-data/`, // POST
+
+  ADD_CERTIFICATE: `${BASE_API_URL}/site-data/add-certificate/`,      // POST
+  LIST_CERTIFICATES: `${BASE_API_URL}/site-data/get-certificates/`,      // GET ( if in params id=3 , then filter by id )
+  UPDATE_CERTIFICATE: `${BASE_API_URL}/site-data/update-certificate/`,      // POST
+  DELETE_CERTIFICATE: `${BASE_API_URL}/site-data/delete-certificate/`,      // DELETE
+  
+  
+  ADD_YOUTUBE_VIDEO: `${BASE_API_URL}/site-data/add-youtube-video/`,      // ADD
+  UPDATE_YOUTUBE_VIDEO: `${BASE_API_URL}/site-data/update-youtube-video/`,      // ADD
+  GET_YOUTUBE_VIDEOS: `${BASE_API_URL}/site-data/get-youtube-videos/`,      // ADD
+  DELETE_YOUTUBE_VIDEO: `${BASE_API_URL}/site-data/delete-youtube-video/`,      // ADD
+
+
 };
 
 // ====================== DONATION =====================
 ENDPOINTS.DONATION = {
   CREATE_ORDER: `${BASE_API_URL}/donations/create-order/`,
   VERIFY_PAYMENT: `${BASE_API_URL}/donations/verify-payment/`,
-  LIST: `${BASE_API_URL}/donation/list/`,
+  ALL_DONATION_HISTORY: `${BASE_API_URL}/donations/all-donation-history/`,
 };
 
 // ====================== ADMIN ========================

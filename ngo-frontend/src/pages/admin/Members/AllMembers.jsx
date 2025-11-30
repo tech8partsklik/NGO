@@ -2,31 +2,27 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { Modal, Button } from "react-bootstrap";
-import { approveMember, blockMember } from "../../../services/member.service";
 
-
-import { getAllMembers } from "../../../services/member.service";
+import { getAllMembers, approveMember, blockMember } from "../../../services/member.service";
 import { debounce } from "../../../utils/debounce";
 
 import FilterTopBar from "../../../common/FilterTopBar/FilterTopBar";
 import Pagination from "../../../common/Pagination/Pagination";
 import { BASE_MEDIA_URL } from "../../../services/endpoints";
+
 import AddMemberModal from "./AddMemberModal";
 import UpdateMemberModal from "./UpdateMemberModal";
+import FilterSelectionModal from "../../../components/FilterModals/FilterSelectionModal";
 
 export default function AllMembers() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // -----------------------------
-    // STATES
-    // -----------------------------
-
-
-
+    // ---------------- STATES ----------------
+    const [loading, setLoading] = useState(true);
+    const [members, setMembers] = useState([]);
 
     const [showAddModal, setShowAddModal] = useState(false);
-
     const [showUpdateModal, setShowUpdateModal] = useState(false);
     const [editMember, setEditMember] = useState(null);
 
@@ -35,12 +31,7 @@ export default function AllMembers() {
         setShowUpdateModal(true);
     };
 
-
-
-
-    const [loading, setLoading] = useState(true);
-    const [members, setMembers] = useState([]);
-
+    // Pagination
     const [currentPage, setCurrentPage] = useState(
         Number(new URLSearchParams(location.search).get("current_page")) || 1
     );
@@ -56,13 +47,17 @@ export default function AllMembers() {
         new URLSearchParams(location.search).get("search") || ""
     );
 
-    const [status, setStatus] = useState(
-        new URLSearchParams(location.search).get("account_status") || ""
+    const [selectedStatus, setSelectedStatus] = useState(
+        new URLSearchParams(location.search).get("account_status")?.split(",") || []
     );
 
-    // -----------------------------
-    // DEBOUNCE SEARCH
-    // -----------------------------
+    // ----------------- STATUS OPTIONS -----------------
+    const statusOptions = [
+        { value: "active", label: "Active" },
+        { value: "pending", label: "Pending" }
+    ];
+
+    // ---------------- DEBOUNCE SEARCH ----------------
     const debouncedFetchMembers = useCallback(
         debounce((query) => {
             fetchData(1, query);
@@ -70,9 +65,7 @@ export default function AllMembers() {
         []
     );
 
-    // -----------------------------
-    // FETCH
-    // -----------------------------
+    // ---------------- FETCH MEMBERS ----------------
     const fetchData = async (page = currentPage, query = searchQuery) => {
         setLoading(true);
 
@@ -80,7 +73,7 @@ export default function AllMembers() {
             search: query,
             page_number: page,
             page_size: pageSize,
-            account_status: status
+            account_status: selectedStatus[0] || ""
         };
 
         try {
@@ -89,38 +82,34 @@ export default function AllMembers() {
             setMembers(res.data || []);
             setTotalPages(res.total_pages || 0);
             setTotalRows(res.total_rows || 0);
+
         } catch (err) {
             console.error(err);
+
         } finally {
             setLoading(false);
         }
     };
 
-    // -----------------------------
-    // FETCH ON INIT / PAGE CHANGE
-    // -----------------------------
     useEffect(() => {
         fetchData();
-    }, [currentPage, pageSize, status]);
+    }, [currentPage, pageSize, selectedStatus]);
 
-    // -----------------------------
-    // UPDATE URL
-    // -----------------------------
+    // ---------------- UPDATE URL PARAMS ----------------
     useEffect(() => {
         const params = new URLSearchParams();
 
         if (searchQuery) params.set("search", searchQuery);
-        if (status) params.set("account_status", status);
+        if (selectedStatus.length) params.set("account_status", selectedStatus.join(","));
 
         params.set("current_page", currentPage);
         params.set("page_size", pageSize);
 
         navigate(`?${params.toString()}`, { replace: true });
-    }, [searchQuery, currentPage, pageSize, status]);
 
-    // -----------------------------
-    // HANDLERS
-    // -----------------------------
+    }, [searchQuery, currentPage, pageSize, selectedStatus]);
+
+    // ---------------- HANDLERS ----------------
     const handlePageChange = (page) => {
         setCurrentPage(page);
         fetchData(page, searchQuery);
@@ -128,15 +117,45 @@ export default function AllMembers() {
 
     const handleClearAllFilter = () => {
         setSearchQuery("");
-        setStatus("");
+        setSelectedStatus([]);
         setCurrentPage(1);
         fetchData(1, "");
     };
 
     const isFilterApplied = () => {
-        return searchQuery !== "" || status !== "";
+        return searchQuery !== "" || selectedStatus.length > 0;
     };
 
+    // ---------------- CONFIRM MODAL ----------------
+    const [showModal, setShowModal] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null);
+    const [actionType, setActionType] = useState("");
+
+    const openConfirmModal = (member, type) => {
+        setSelectedMember(member);
+        setActionType(type);
+        setShowModal(true);
+    };
+
+    const handleConfirmAction = async () => {
+        if (!selectedMember) return;
+
+        try {
+            if (actionType === "approve") await approveMember(selectedMember.id);
+            if (actionType === "block") await blockMember(selectedMember.id);
+
+            fetchData(currentPage, searchQuery);
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setShowModal(false);
+            setSelectedMember(null);
+            setActionType("");
+        }
+    };
+
+    // ---------------- MENUS ----------------
     const menus = [
         {
             name: "Add Member",
@@ -148,86 +167,42 @@ export default function AllMembers() {
             type: "dropdown",
             label: "Quick Actions",
             items: [
-                { name: "Approved Members", onClick: () => setStatus("active") },
-                { name: "Pending Members", onClick: () => setStatus("pending") },
+                { name: "Approved Members", onClick: () => setSelectedStatus(["active"]) },
+                { name: "Pending Members", onClick: () => setSelectedStatus(["pending"]) }
             ]
         }
     ];
 
-
-
-    const [showModal, setShowModal] = useState(false);
-    const [selectedMember, setSelectedMember] = useState(null);
-    const [actionType, setActionType] = useState(""); // approve | block
-    const openConfirmModal = (member, type) => {
-        setSelectedMember(member);
-        setActionType(type);
-        setShowModal(true);
-    };
-
-    const handleConfirmAction = async () => {
-        if (!selectedMember) return;
-
-        try {
-            if (actionType === "approve") {
-                await approveMember(selectedMember.id);
-            }
-
-            if (actionType === "block") {
-                await blockMember(selectedMember.id);
-            }
-
-            fetchData(currentPage, searchQuery); // refresh table
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setShowModal(false);
-            setSelectedMember(null);
-            setActionType("");
-        }
-    };
-
-
-
     return (
         <>
-
-
+            {/* ADD MODAL */}
             {showAddModal && (
                 <AddMemberModal
                     show={showAddModal}
                     onHide={() => setShowAddModal(false)}
-                    onSuccess={() => {
-                        fetchData(currentPage, searchQuery)
-                    }}
+                    onSuccess={() => fetchData(currentPage, searchQuery)}
                 />
             )}
 
-
+            {/* UPDATE MODAL */}
             {showUpdateModal && (
                 <UpdateMemberModal
                     show={showUpdateModal}
                     onHide={() => setShowUpdateModal(false)}
                     member={editMember}
-                    onSuccess={() => {
-                        fetchData(currentPage, searchQuery);
-                    }}
+                    onSuccess={() => fetchData(currentPage, searchQuery)}
                 />
             )}
 
-
-
-            {/* ================= BREADCRUMB ================= */}
+            {/* BREADCRUMB */}
             <nav>
                 <ol className="breadcrumb mb-2">
-                    <li className="breadcrumb-item">
-                        <Link to="/admin/dashboard">Dashboard</Link>
-                    </li>
+                    <li className="breadcrumb-item"><Link to="/admin/dashboard">Dashboard</Link></li>
                     <li className="breadcrumb-item active">Members</li>
                 </ol>
             </nav>
 
-            {/* ================= FILTER BAR ================= */}
+            {/* FILTER BAR */}
             <FilterTopBar
                 defaultSearch={searchQuery}
                 onSearch={(q) => {
@@ -236,16 +211,13 @@ export default function AllMembers() {
                     debouncedFetchMembers(q);
                 }}
                 onClear={handleClearAllFilter}
-                // onApply={() => fetchData(1, searchQuery)}
                 isFilterApplied={isFilterApplied()}
                 menus={menus}
             />
 
-            {/* ================= MAIN TABLE ================= */}
+            {/* TABLE */}
             <div className="main-table">
-
                 <table className="table table-bordered mb-0">
-
                     <thead>
                         <tr>
                             <th>#</th>
@@ -253,28 +225,38 @@ export default function AllMembers() {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>Status</th>
+
+                            {/* FILTER IN TH */}
+                            <th>
+                                <FilterSelectionModal
+                                    title="Status"
+                                    options={statusOptions}
+                                    selectedOptions={selectedStatus}
+                                    onSelect={setSelectedStatus}
+                                    searchable={false}
+                                    selectableAll={false}
+                                    multiSelection={false}
+                                />
+                            </th>
+
                             <th>City</th>
-                            <th style={{ width: 120 }}>Action</th>
+                            <th style={{ width: 140 }}>Action</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
                         {loading ? (
                             [...Array(7)].map((_, i) => (
                                 <tr key={i}>
                                     {[...Array(8)].map((_, j) => (
-                                        <td key={j}>
-                                            <Skeleton height={24} />
-                                        </td>
+                                        <td key={j}><Skeleton height={24} /></td>
                                     ))}
                                 </tr>
                             ))
                         ) : members.length > 0 ? (
-                            members.map((m, index) => (
+                            members.map((m) => (
                                 <tr key={m.id}>
-                                    <td>{index + 1}</td>
+                                    <td>{m.id}</td>
 
                                     <td>
                                         <img
@@ -303,39 +285,30 @@ export default function AllMembers() {
 
                                     <td>{m.city}</td>
 
-                                    <td className=" text-nowrap">
-
-
+                                    <td className="text-nowrap">
                                         <button
-                                            className="btn btn-primary me-1"
+                                            className="btn btn-primary btn-sm me-1"
                                             onClick={() => openUpdateModal(m)}
                                         >
                                             <i className="fa fa-pen"></i>
                                         </button>
 
-
-
-
                                         {!m.is_active ? (
                                             <button
-                                                className="btn btn-success"
+                                                className="btn btn-success btn-sm"
                                                 onClick={() => openConfirmModal(m, "approve")}
                                             >
                                                 <i className="fa-solid fa-check me-1"></i> Approve
                                             </button>
                                         ) : (
                                             <button
-                                                className="btn btn-danger"
+                                                className="btn btn-danger btn-sm"
                                                 onClick={() => openConfirmModal(m, "block")}
                                             >
-                                                <i className="fa-solid fa-ban me-1"></i> Block
+                                                <i className="fa-solid fa-ban me-1"></i> Disapprove
                                             </button>
                                         )}
-
-
-
                                     </td>
-
                                 </tr>
                             ))
                         ) : (
@@ -345,14 +318,11 @@ export default function AllMembers() {
                                 </td>
                             </tr>
                         )}
-
                     </tbody>
-
                 </table>
-
             </div>
 
-            {/* ================= PAGINATION ================= */}
+            {/* PAGINATION */}
             <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
@@ -364,31 +334,16 @@ export default function AllMembers() {
                 disabled={loading}
             />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            {/* CONFIRM MODAL */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {actionType === "approve" ? "Approve Member" : "Block Member"}
+                        {actionType === "approve" ? "Approve Member" : "Disapprove Member"}
                     </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    Are you sure you want to{" "}
-                    <strong>{actionType}</strong> this member?
-
+                    Are you sure you want to <strong>{actionType === "approve" ? "Approve Member" : "Disapprove Member"}</strong>?
                     <div className="mt-2 p-2 bg-light rounded">
                         <strong>{selectedMember?.full_name}</strong>
                         <br />
@@ -400,19 +355,15 @@ export default function AllMembers() {
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
                         Cancel
                     </Button>
+
                     <Button
                         variant={actionType === "approve" ? "success" : "danger"}
                         onClick={handleConfirmAction}
                     >
-                        Yes, {actionType}
+                        Yes, {actionType === "approve" ? "Approve" : "Disapprove"}
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-
-
-
-
         </>
     );
 }

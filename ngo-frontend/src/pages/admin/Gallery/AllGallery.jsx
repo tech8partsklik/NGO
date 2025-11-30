@@ -167,7 +167,7 @@ export default function AllGallery() {
             ) : items.length > 0 ? (
               items.map((item, index) => (
                 <tr key={item.id}>
-                  <td>{index + 1}</td>
+                  <td>{item.id}</td>
 
                   <td>
                     {item.file_type === "Video" ? (
