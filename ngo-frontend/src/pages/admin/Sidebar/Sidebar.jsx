@@ -1,10 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import "./Sidebar.css";
 
-// ✅ SIDEBAR LINKS CONFIG
-const ADMIN_NAVS = [
+export const ADMIN_NAVS = [
   {
     section: "MAIN",
     items: [
@@ -15,6 +14,7 @@ const ADMIN_NAVS = [
       },
     ],
   },
+
   {
     section: "MANAGEMENT",
     items: [
@@ -23,154 +23,183 @@ const ADMIN_NAVS = [
         path: "/admin/members",
         icon: "fa-users",
       },
+
       {
-        name: "Banners",
-        path: "/admin/banners",
-        icon: "fa-image",
+        name: "Site Content",
+        icon: "fa-database",
+        submenu: [
+          { name: "Site Data Editor", path: "/admin/site-data" },
+          { name: "About", path: "/admin/site-data/about" },
+          { name: "Mission", path: "/admin/site-data/mission" },
+          { name: "Vision", path: "/admin/site-data/vision" },
+          { name: "Objective", path: "/admin/site-data/objective" },
+          { name: "Achievement", path: "/admin/site-data/achievement" },
+        ],
       },
+
+      {
+        name: "Media",
+        icon: "fa-images",
+        submenu: [
+          { name: "Banners", path: "/admin/banners" },
+          { name: "Gallery", path: "/admin/gallery" },
+          { name: "Certificates", path: "/admin/certificates" },
+          { name: "YouTube Videos", path: "/admin/youtube-videos" },
+        ],
+      },
+
+      {
+        name: "News & Events",
+        icon: "fa-newspaper",
+        submenu: [
+          { name: "News", path: "/admin/news" },
+          { name: "Events", path: "/admin/events" },
+        ],
+      },
+
+      {
+        name: "System",
+        icon: "fa-gear",
+        submenu: [
+          { name: "Roles", path: "/admin/roles" },
+          { name: "Announcements", path: "/admin/announcements" },
+          { name: "Testimonials", path: "/admin/testimonials" },
+        ],
+      },
+
       {
         name: "Donations",
         path: "/admin/donations",
         icon: "fa-hand-holding-heart",
       },
-      {
-        name: "Roles",
-        path: "/admin/roles",
-        icon: "fa-user-shield",
-      },
-      {
-        name: "Announcements",
-        path: "/admin/announcements",
-        icon: "fa-bullhorn",
-      },
-      {
-        name: "Testimonials",
-        path: "/admin/testimonials",
-        icon: "fa-comment-dots",
-      },
-      {
-        name: "Gallery",
-        path: "/admin/gallery",
-        icon: "fa-images",
-      },
-      {
-        name: "Campaigns",
-        path: "/admin/campaigns",
-        icon: "fa-bullhorn"
-      },
-      {
-        name: "News",
-        path: "/admin/news",
-        icon: "fa-newspaper"
-      },
-      {
-        name: "Events",
-        path: "/admin/events",
-        icon: "fa-calendar"
-      },
-      {
-        name: "Site Data Editor",
-        path: "/admin/site-data",
-        icon: "fa-database"
-      },
-      {
-        name: "About Editor",
-        path: "/admin/site-data/about",
-        icon: "fa-database"
-      },
-      {
-        name: "Mission Editor",
-        path: "/admin/site-data/mission",
-        icon: "fa-database"
-      },
-      {
-        name: "Vision Editor",
-        path: "/admin/site-data/vision",
-        icon: "fa-database"
-      },
-      {
-        name: "Objective Editor",
-        path: "/admin/site-data/objective",
-        icon: "fa-database"
-      },
-      {
-        name: "Achievement Editor",
-        path: "/admin/site-data/achievement",
-        icon: "fa-database"
-      },
-      {
-        name: "Certificates",
-        path: "/admin/certificates",
-        icon: "fa-certificate"
-      },
-      {
-        name: "YouTube Videos",
-        path: "/admin/youtube-videos",
-        icon: "fa-youtube"
-      },
     ],
-  }
+  },
 ];
+
 
 export default function Sidebar({ collapsed, setCollapsed }) {
   const { user, logout } = useContext(AuthContext);
 
+
+  const [openMenu, setOpenMenu] = useState(null);    // submenu toggle
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleSubmenu = (index) => {
+    setOpenMenu(openMenu === index ? null : index);
+  };
+
+  // For mobile
+  const closeMobileSidebar = () => setMobileOpen(false);
+
   return (
-    <aside className={`admin-sidebar ${collapsed ? "collapsed" : ""}`}>
+    <>
+      {/* MOBILE OVERLAY */}
+      <div
+        className={`sidebar-backdrop ${mobileOpen ? "show" : ""}`}
+        onClick={() => setMobileOpen(false)}
+      ></div>
 
-      {/* LOGO */}
-      <div className="admin-logo">
-        <h4>{!collapsed ? "NGO Admin" : "NGO"}</h4>
-      </div>
-
-      {/* TOGGLE BUTTON */}
-      <button
-        className="sidebar-toggle"
-        onClick={() => setCollapsed(!collapsed)}
+      <aside
+        className={`admin-sidebar ${collapsed ? "collapsed" : ""} ${
+          mobileOpen ? "mobile-open" : ""
+        }`}
       >
-        <i
-          className={`fa ${collapsed ? "fa-chevron-right" : "fa-chevron-left"
-            }`}
-        ></i>
-      </button>
+        {/* LOGO */}
+        <div className="admin-logo">
+          {!collapsed ? "NGO Admin" : "NGO"}
 
-      {/* USER INFO */}
-      {user && !collapsed && (
-        <div className="admin-user">
-          <strong>{user.full_name}</strong>
-          <span className="text-capitalize">{user.role?.name}</span>
+          {/* mobile close */}
+          <button
+            className="mobile-close"
+            onClick={() => setMobileOpen(false)}
+          >
+            <i className="fa fa-times"></i>
+          </button>
         </div>
-      )}
 
-      {/* MENU */}
-      <nav className="sidebar-menu">
-
-        {ADMIN_NAVS.map((section, index) => (
-          <div key={index}>
-
-            {!collapsed && (
-              <div className="menu-title">
-                <small>{section.section}</small>
-              </div>
-            )}
-
-            {section.items.map((item, i) => (
-              <NavLink key={i} to={item.path} title={item.name}>
-                <i className={`fa ${item.icon}`}></i>
-                {!collapsed && <span>{item.name}</span>}
-              </NavLink>
-            ))}
-
-          </div>
-        ))}
-
-        {/* LOGOUT */}
-        <button className="logout-btn" onClick={logout}>
-          <i className="fa fa-right-from-bracket"></i>
-          {!collapsed && <span>Logout</span>}
+        {/* TOGGLE BUTTON */}
+        <button
+          className="sidebar-toggle"
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          <i
+            className={`fa ${collapsed ? "fa-chevron-right" : "fa-chevron-left"}`}
+          ></i>
         </button>
 
-      </nav>
-    </aside>
+        {/* USER INFO */}
+        {!collapsed && (
+          <div className="admin-user">
+            <strong>{user.full_name}</strong>
+            <span>{user.role?.name}</span>
+          </div>
+        )}
+
+        {/* MENU */}
+        <nav className="sidebar-menu">
+          {ADMIN_NAVS.map((section, sIdx) => (
+            <div key={sIdx}>
+              {!collapsed && (
+                <div className="menu-title">
+                  <small>{section.section}</small>
+                </div>
+              )}
+
+              {section.items.map((item, idx) => {
+                // SUBMENU HANDLING
+                if (item.submenu) {
+                  const isOpen = openMenu === `${sIdx}-${idx}`;
+                  return (
+                    <div key={idx} className="submenu-group">
+                      <div
+                        className="menu-item submenu-toggle"
+                        onClick={() => toggleSubmenu(`${sIdx}-${idx}`)}
+                      >
+                        <i className={`fa ${item.icon}`}></i>
+                        {!collapsed && <span>{item.name}</span>}
+                        {!collapsed && (
+                          <i
+                            className={`fa fa-chevron-${
+                              isOpen ? "up" : "down"
+                            } submenu-arrow`}
+                          ></i>
+                        )}
+                      </div>
+
+                      <div className={`submenu ${isOpen ? "open" : ""}`}>
+                        {item.submenu.map((sub, i) => (
+                          <NavLink key={i} to={sub.path} className="submenu-link">
+                            {sub.name}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // NORMAL LINK
+                return (
+                  <NavLink key={idx} to={item.path} className="menu-item">
+                    <i className={`fa ${item.icon}`}></i>
+                    {!collapsed && <span>{item.name}</span>}
+                  </NavLink>
+                );
+              })}
+            </div>
+          ))}
+
+          {/* LOGOUT */}
+          <button className="logout-btn" onClick={logout}>
+            <i className="fa fa-right-from-bracket"></i>
+            {!collapsed && <span>Logout</span>}
+          </button>
+        </nav>
+      </aside>
+
+      {/* MOBILE TOGGLE BUTTON */}
+      <button className="mobile-menu-btn" onClick={() => setMobileOpen(true)}>
+        <i className="fa fa-bars"></i>
+      </button>
+    </>
   );
 }

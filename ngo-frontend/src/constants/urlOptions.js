@@ -19,4 +19,6 @@ export const URL_OPTIONS = [
   { label: "Contact", value: "/contact" },
 
   { label: "Login", value: "/login" },
+
+  { label: "MemberShip Apply", value: "/membership" },
 ];

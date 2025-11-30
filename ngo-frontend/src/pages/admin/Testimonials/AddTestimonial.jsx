@@ -114,7 +114,7 @@ export default function AddTestimonial() {
         />
 
         {/* PREVIEW */}
-        {preview && (
+        {/* {preview && (
           <div className="mt-3">
             <img
               src={preview.url}
@@ -123,7 +123,7 @@ export default function AddTestimonial() {
               style={{ maxHeight: "200px" }}
             />
           </div>
-        )}
+        )} */}
 
         <hr className="my-4" />
 

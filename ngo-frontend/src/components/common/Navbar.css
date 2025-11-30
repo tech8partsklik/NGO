@@ -170,15 +170,15 @@
   align-items: center;
 }
 
-.menu-item {
+.desktop-menu .menu-item {
   position: relative;
 }
 
-.menu-item > a {
+.desktop-menu .menu-item > a {
   position: relative;
 }
 
-.menu-item > a::after {
+.desktop-menu .menu-item > a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -189,12 +189,12 @@
   transition: 0.3s ease;
 }
 
-.menu-item > a:hover::after,
-.menu-item > a.active::after {
+.desktop-menu .menu-item > a:hover::after,
+.desktop-menu .menu-item > a.active::after {
   width: 100%;
 }
 
-.menu-item a {
+.desktop-menu .menu-item a {
   color: var(--text-color);
   font-weight: 500;
   padding: 0.6rem 0;
@@ -203,17 +203,17 @@
   gap: 0.3rem;
 }
 
-.menu-item:hover > a {
+.desktop-menu .menu-item:hover > a {
   color: var(--primary-color);
   text-shadow: 0 0 0.5rem rgba(31, 60, 136, 0.3);
 }
 
-.menu-item i {
+.desktop-menu .menu-item i {
   font-size: 0.65rem;
 }
 
 /* SUBMENU */
-.submenu {
+.desktop-menu .submenu {
   position: absolute;
   top: 110%;
   left: 0;
@@ -232,7 +232,7 @@
   z-index: 999;
 }
 
-.submenu::before {
+.desktop-menu .submenu::before {
   content: "";
   position: absolute;
   top: -0.6rem;
@@ -243,7 +243,7 @@
   transform: rotate(45deg);
 }
 
-.menu-item:hover .submenu {
+.desktop-menu .menu-item:hover .submenu {
   display: flex;
   animation: dropdown 0.25s ease forwards;
 }
@@ -259,13 +259,13 @@
   }
 }
 
-.submenu a {
+.desktop-menu .submenu a {
   padding: 0.75rem 1.2rem;
   font-size: 0.9rem;
   transition: 0.2s;
 }
 
-.submenu a:hover {
+.desktop-menu .submenu a:hover {
   background: var(--light-bg);
   padding-left: 1.5rem;
   color: var(--primary-color);
